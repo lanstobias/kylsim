@@ -28,9 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // FormKylsim
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(624, 441);
+            this.Name = "FormKylsim";
+            this.Text = "Kylsystem av Bobo Lillqvist och Tobias Lans";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormKylsim_Paint);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
