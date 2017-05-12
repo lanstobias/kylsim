@@ -16,7 +16,7 @@ namespace kylsim
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormKylsim());
+            Application.Run(new Form1());
         }
     }
 }
