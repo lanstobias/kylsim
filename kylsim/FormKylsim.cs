@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace kylsim
 {
-    public partial class Form1 : Form
+    public partial class FormKylsim : Form
     {
-        public Form1()
+        public FormKylsim()
         {
             InitializeComponent();
         }

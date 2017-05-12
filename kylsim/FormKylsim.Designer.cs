@@ -1,6 +1,6 @@
 ﻿namespace kylsim
 {
-    partial class Form1
+    partial class FormKylsim
     {
         /// <summary>
         /// Required designer variable.
