@@ -1,27 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace kylsim
 {
     public class VVS
     {
-        public string Name { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float W { get; set; }
-        public float H { get; set; }
+        protected string Name { get; set; }
+        protected float X { get; set; }
+        protected float Y { get; set; }
+        protected float W { get; set; }
+        protected float H { get; set; }
 
-        public VVS Next { get; set; }
-        public VVS NodeIn { get; set; }
-        public VVS NodeOut { get; set; }
+        protected VVS Next    { get; set; }
+        protected VVS NodeIn  { get; set; }
+        protected VVS NodeOut { get; set; }
 
-        public VVS(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
-                    VVS next = null, VVS nodeIn = null, VVS nodeOut = null)
+        protected VVS(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
+                      VVS next = null, VVS nodeIn = null, VVS nodeOut = null)
         {
             Name = name;
             X = x;
@@ -36,8 +31,8 @@ namespace kylsim
 
     public class Node : VVS
     {
-        public float Pressure { get; set; }
-        public bool Adjustable { get; set; }
+        private float Pressure { get; set; }
+        private bool Adjustable { get; set; }
 
 
         public Node(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
@@ -58,8 +53,7 @@ namespace kylsim
 
         public void Draw(Graphics canvas)
         {
-            Pen pen2 = new Pen(Color.Red); //Ska vara röd.
-            // Draw node
+            Pen pen2 = new Pen(Color.Red);
             canvas.DrawEllipse(pen2, X, Y, W, H);
         }
 
