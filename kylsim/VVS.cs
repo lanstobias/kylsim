@@ -28,8 +28,6 @@ namespace kylsim
             H = h;
             Next    = next;
             NodeIn  = nodeIn;
-            Next = next;
-            NodeIn = nodeIn;
             NodeOut = nodeOut;
         }
     }
