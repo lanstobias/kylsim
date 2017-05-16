@@ -14,6 +14,8 @@ namespace kylsim
     {
         private Graphics canvas;
 
+        Node node1 = new Node("Test nod", 10, 10, 10, 10, null, null, null, 4, false);
+
         public FormKylsim()
         {
             InitializeComponent();
@@ -28,6 +30,8 @@ namespace kylsim
         {
             // Skapa penna
             Pen pen = new Pen(Color.Red);
+
+            node1.Draw(canvas);
 
             // Rita med pennan ;DDD
             canvas.DrawLine(pen, 100, 100, 200, 200);
