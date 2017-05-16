@@ -51,8 +51,10 @@
     <Compile Include="FormKylsim.Designer.cs">
       <DependentUpon>FormKylsim.cs</DependentUpon>
     </Compile>
+    <Compile Include="Kylsim.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VVS.cs" />
     <EmbeddedResource Include="FormKylsim.resx">
       <DependentUpon>FormKylsim.cs</DependentUpon>
     </EmbeddedResource>
