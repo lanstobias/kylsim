@@ -58,7 +58,7 @@ namespace kylsim
 
         public void Draw(Graphics canvas)
         {
-            Pen pen2 = new Pen(Color.Blue);
+            Pen pen2 = new Pen(Color.Red); //Ska vara röd.
             // Draw node
             canvas.DrawEllipse(pen2, X, Y, W, H);
         }
