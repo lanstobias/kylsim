@@ -28,12 +28,13 @@ namespace kylsim
         //
         private void FormKylsim_Paint(object sender, PaintEventArgs e)
         {
-            // Skapa penna
+            // Create pen
             Pen pen = new Pen(Color.Red);
 
             node1.Draw(canvas);
+            node1.Display(canvas);
 
-            // Rita med pennan ;DDD
+            // Draw line
             canvas.DrawLine(pen, 100, 100, 200, 200);
         }
     }
