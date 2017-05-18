@@ -135,7 +135,57 @@ namespace kylsim
 
     public class Valve : VVS
     {
-        
+        private double Position { get; set; }
+        private double Admittance { get; set; }
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Valve"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="w">The w.</param>
+        /// <param name="h">The h.</param>
+        /// <param name="next">The next.</param>
+        /// <param name="nodeIn">The node in.</param>
+        /// <param name="nodeOut">The node out.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="admittance">The admittance.</param>
+        public Valve(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
+                    VVS next = null, VVS nodeIn = null, VVS nodeOut = null,
+                    double position = 0, double admittance = 10)
+        {
+            Name = name;
+            X = x;
+            Y = y;
+            W = w;
+            H = h;
+            Next = next;
+            NodeIn = nodeIn;
+            NodeOut = nodeOut;
+            Position = position;
+            Admittance = admittance;
+        }
+        public void Draw(Graphics canvas, Brush brush, Font font, Pen pen)
+        {
+            // Draw ventil
+            const int Ygrad = 10;
+            const int Xgrad = 15;
+       
+            canvas.DrawLine(pen, X, Y, X+ Xgrad, Y+ Ygrad);
+            canvas.DrawLine(pen, X, Y, X + Xgrad, Y - Ygrad);
+            canvas.DrawLine(pen, X+ Xgrad, Y+ Ygrad, X + Xgrad, Y - Ygrad);
+            canvas.DrawLine(pen, X, Y, X - Xgrad, Y - Ygrad);
+            canvas.DrawLine(pen, X, Y, X - Xgrad, Y + Ygrad);
+            canvas.DrawLine(pen, X - Xgrad, Y - Ygrad, X - Xgrad, Y + Ygrad);
+
+            // Draw text
+
+            canvas.DrawString(Name, font, brush, (float)X + 10, (float)Y + -20);
+            canvas.DrawString("Jag är en fin ventil :3 ", font, brush, (float)X + 10, (float)Y + 15);
+        }
+
     }
 
     public class Pump : VVS

@@ -24,6 +24,7 @@ namespace kylsim
         Node node1 = new Node("N1", 100, 200, 10, 10, null, null, null, 4, false);
         Node node2 = new Node("N2", 200, 200, 10, 10, null, null, null, 2, false);
         Node node3 = new Node("N3", 300, 200, 10, 10, null, null, null, 7.5, false);
+        Valve valve1=new Valve("V1", 400, 200, 10, 10, null, null, null, 7.5, 10);
         public FormKylsim()
         {
             InitializeComponent();
@@ -45,7 +46,7 @@ namespace kylsim
             node1.Draw(canvas, brush, font, ComponentPen);
             node2.Draw(canvas, brush, font, ComponentPen);
             node3.Draw(canvas, brush, font, ComponentPen);
-
+            valve1.Draw(canvas, brush, font, ComponentPen);
 
             // Draw line
             canvas.DrawLine(LinePen, 105, 205, 305, 205);
