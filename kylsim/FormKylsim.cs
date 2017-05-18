@@ -14,7 +14,7 @@ namespace kylsim
     {
         private Graphics canvas;
 
-        Node node1 = new Node("Test nod", 10, 10, 10, 10, null, null, null, 4, false);
+        Node node1 = new Node("Test nod", 100, 200, 10, 10, null, null, null, 4, false);
 
         public FormKylsim()
         {
@@ -35,7 +35,7 @@ namespace kylsim
             node1.Display(canvas);
 
             // Draw line
-            canvas.DrawLine(pen, 100, 100, 200, 200);
+            canvas.DrawLine(pen, 105, 205, 200, 205);
         }
     }
 }

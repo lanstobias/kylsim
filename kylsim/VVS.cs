@@ -90,7 +90,7 @@ namespace kylsim
             // Draw text
             Brush brush = new SolidBrush(Color.Black);
             Font font = new Font("Courier", 10);
-            canvas.DrawString(Name, font, brush, (float)X + 15, (float)Y + -20);
+            canvas.DrawString(Name, font, brush, (float)X + 10, (float)Y + -20);
         }
 
         /// <summary>
