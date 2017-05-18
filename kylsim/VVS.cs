@@ -62,7 +62,7 @@ namespace kylsim
         /// <param name="sumFlow">The sum flow.</param>
         public Node(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
                     VVS next = null, VVS nodeIn = null, VVS nodeOut = null, 
-                    float pressure = 0, bool adjustable = false, double sumFlow = 0)
+                    double pressure = 0, bool adjustable = false, double sumFlow = 0)
         {
             Name = name;
             X = x;
@@ -81,16 +81,16 @@ namespace kylsim
         /// Draws the specified canvas.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        public void Draw(Graphics canvas)
+        public void Draw(Graphics canvas, Brush brush, Font font, Pen pen)
         {
             // Draw ellipse
-            Pen pen2 = new Pen(Color.Red);
-            canvas.DrawEllipse(pen2, X, Y, W, H);
+     
+            canvas.DrawEllipse(pen, X, Y, W, H);
 
             // Draw text
-            Brush brush = new SolidBrush(Color.Black);
-            Font font = new Font("Courier", 10);
+    
             canvas.DrawString(Name, font, brush, (float)X + 10, (float)Y + -20);
+            canvas.DrawString("Tryck: ", font, brush, (float)X + 10, (float)Y + 15);
         }
 
         /// <summary>
@@ -124,13 +124,11 @@ namespace kylsim
         /// Displays the specified canvas.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        public void Display(Graphics canvas)
+        public void Display(Graphics canvas, Brush brush, Font font)
         {
             const string twoDecimals = "F1";
 
-            Brush brush = new SolidBrush(Color.Black);
-            Font font = new Font("Courier", 8);
-            canvas.DrawString("Tryck: ", font, brush, (float)X + 10, (float)Y + 15);
+            
             canvas.DrawString(Pressure.ToString(twoDecimals), font, brush, (float)X + 45, (float)Y + 15);
         }
     }

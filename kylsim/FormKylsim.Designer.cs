@@ -28,7 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 350;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // FormKylsim
             // 
@@ -37,12 +45,15 @@
             this.ClientSize = new System.Drawing.Size(624, 441);
             this.Name = "FormKylsim";
             this.Text = "Kylsystem av Bobo Lillqvist och Tobias Lans";
+            this.Load += new System.EventHandler(this.FormKylsim_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormKylsim_Paint);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer timer;
     }
 }
 
