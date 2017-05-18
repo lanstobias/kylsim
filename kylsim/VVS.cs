@@ -5,15 +5,11 @@ namespace kylsim
 {
     public class VVS
     {
-        protected string Name { get; set; }
-        protected float X { get; set; }
-        protected float Y { get; set; }
-        protected float W { get; set; }
-        protected float H { get; set; }
-
-        protected VVS Next    { get; set; }
-        protected VVS NodeIn  { get; set; }
-        protected VVS NodeOut { get; set; }
+        public string Name { get; protected set; }
+        public float X { get; protected set; }
+        public float Y { get; protected set; }
+        public float W { get; protected set; }
+        public float H { get; protected set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VVS"/> class.
@@ -26,17 +22,13 @@ namespace kylsim
         /// <param name="next">The next.</param>
         /// <param name="nodeIn">The node in.</param>
         /// <param name="nodeOut">The node out.</param>
-        protected VVS(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
-                      VVS next = null, VVS nodeIn = null, VVS nodeOut = null)
+        protected VVS(string name = "", float x = 0, float y = 0, float w = 0, float h = 0)
         {
             Name = name;
             X = x;
             Y = y;
             W = w;
             H = h;
-            Next    = next;
-            NodeIn  = nodeIn;
-            NodeOut = nodeOut;
         }
     }
 
@@ -61,7 +53,6 @@ namespace kylsim
         /// <param name="adjustable">if set to <c>true</c> [adjustable].</param>
         /// <param name="sumFlow">The sum flow.</param>
         public Node(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
-                    VVS next = null, VVS nodeIn = null, VVS nodeOut = null, 
                     double pressure = 0, bool adjustable = false, double sumFlow = 0)
         {
             Name = name;
@@ -69,9 +60,6 @@ namespace kylsim
             Y = y;
             W = w;
             H = h;
-            Next       = next;
-            NodeIn     = nodeIn;
-            NodeOut    = nodeOut;
             Pressure   = pressure;
             Adjustable = adjustable;
             SumFlow    = sumFlow;
@@ -84,11 +72,9 @@ namespace kylsim
         public void Draw(Graphics canvas, Brush brush, Font font, Pen pen)
         {
             // Draw ellipse
-     
-            canvas.DrawEllipse(pen, X, Y, W, H);
+            canvas.DrawEllipse(pen, X, Y-((W+H)/4), W, H);
 
             // Draw text
-    
             canvas.DrawString(Name, font, brush, (float)X + 10, (float)Y + -20);
             canvas.DrawString("Tryck: ", font, brush, (float)X + 10, (float)Y + 15);
         }
@@ -137,7 +123,8 @@ namespace kylsim
     {
         private double Position { get; set; }
         private double Admittance { get; set; }
-
+        public VVS NodeIn { get; set; }
+        public VVS NodeOut { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Valve"/> class.
@@ -153,39 +140,47 @@ namespace kylsim
         /// <param name="position">The position.</param>
         /// <param name="admittance">The admittance.</param>
         public Valve(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
-                    VVS next = null, VVS nodeIn = null, VVS nodeOut = null,
-                    double position = 0, double admittance = 10)
+                     double position = 0, double admittance = 10, VVS nodeIn = null, VVS nodeOut = null)
         {
             Name = name;
             X = x;
             Y = y;
             W = w;
             H = h;
-            Next = next;
             NodeIn = nodeIn;
             NodeOut = nodeOut;
             Position = position;
             Admittance = admittance;
         }
-        public void Draw(Graphics canvas, Brush brush, Font font, Pen pen)
+
+        /// <summary>
+        /// Draws the specified canvas.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        /// <param name="brush">The brush.</param>
+        /// <param name="font">The font.</param>
+        /// <param name="pen">The pen.</param>
+        public void Draw(Graphics canvas, Brush brush, Font font, Pen componentPen, Pen linePen)
         {
-            // Draw ventil
             const int Ygrad = 10;
             const int Xgrad = 15;
        
-            canvas.DrawLine(pen, X, Y, X+ Xgrad, Y+ Ygrad);
-            canvas.DrawLine(pen, X, Y, X + Xgrad, Y - Ygrad);
-            canvas.DrawLine(pen, X+ Xgrad, Y+ Ygrad, X + Xgrad, Y - Ygrad);
-            canvas.DrawLine(pen, X, Y, X - Xgrad, Y - Ygrad);
-            canvas.DrawLine(pen, X, Y, X - Xgrad, Y + Ygrad);
-            canvas.DrawLine(pen, X - Xgrad, Y - Ygrad, X - Xgrad, Y + Ygrad);
+            // Draw valve graphics
+            canvas.DrawLine(componentPen, X, Y, X+Xgrad, Y+ Ygrad);
+            canvas.DrawLine(componentPen, X, Y, X+Xgrad, Y - Ygrad);
+            canvas.DrawLine(componentPen, X+Xgrad, Y+Ygrad, X + Xgrad, Y - Ygrad);
+            canvas.DrawLine(componentPen, X,Y, X-Xgrad, Y - Ygrad);
+            canvas.DrawLine(componentPen, X, Y, X-Xgrad, Y + Ygrad);
+            canvas.DrawLine(componentPen, X-Xgrad,  Y-Ygrad, X - Xgrad, Y + Ygrad);
+
+            // Draw lines
+            canvas.DrawLine(linePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H)/4, NodeIn.Y);
+            canvas.DrawLine(linePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H)/4, NodeOut.Y);
 
             // Draw text
-
             canvas.DrawString(Name, font, brush, (float)X + 10, (float)Y + -20);
             canvas.DrawString("Jag är en fin ventil :3 ", font, brush, (float)X + 10, (float)Y + 15);
         }
-
     }
 
     public class Pump : VVS
