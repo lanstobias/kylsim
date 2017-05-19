@@ -14,6 +14,14 @@ namespace kylsim
         public float W { get; protected set; }
         public float H { get; protected set; }
 
+        public VVS Next { get; set; }
+
+        // Graphics
+        protected Font Font        = new Font("Courier", 8);
+        protected Brush Brush      = new SolidBrush(Color.Black);
+        protected Pen LinePen      = new Pen(Color.Blue);
+        protected Pen ComponentPen = new Pen(Color.Red);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="VVS"/> class.
         /// </summary>
@@ -33,7 +41,17 @@ namespace kylsim
             W = w;
             H = h;
         }
+
+        /// <summary>
+        /// Draws the specified canvas.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        public virtual void Draw(Graphics canvas)
+        {
+
+        }
     }
+
     /// <summary>
     /// Node
     /// </summary>
@@ -59,7 +77,8 @@ namespace kylsim
         /// <param name="adjustable">if set to <c>true</c> [adjustable].</param>
         /// <param name="sumFlow">The sum flow.</param>
         public Node(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
-                    double pressure = 0, bool adjustable = false, double sumFlow = 0)
+                    double pressure = 0, bool adjustable = false,
+                    double sumFlow = 0, VVS next = null)
         {
             Name = name;
             X = x;
@@ -69,20 +88,21 @@ namespace kylsim
             Pressure   = pressure;
             Adjustable = adjustable;
             SumFlow    = sumFlow;
+            Next = next;
         }
 
         /// <summary>
         /// Draws the specified canvas.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        public void Draw(Graphics canvas, Brush brush, Font font, Pen pen)
+        public override void Draw(Graphics canvas) 
         {
             // Draw ellipse
-            canvas.DrawEllipse(pen, X, Y-((W+H)/4), W, H);
+            canvas.DrawEllipse(ComponentPen, X, Y-((W+H)/4), W, H);
 
             // Draw text
-            canvas.DrawString(Name, font, brush, (float)X + 10, (float)Y + -20);
-            canvas.DrawString("Tryck: ", font, brush, (float)X + 10, (float)Y + 15);
+            canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -20);
+            canvas.DrawString("Tryck: ", Font, Brush, (float)X + 10, (float)Y + 15);
         }
 
         /// <summary>
@@ -93,7 +113,7 @@ namespace kylsim
         /// <returns></returns>
         public void AddSumFlow(double Flow)
         {
-            SumFlow +=Flow;
+            SumFlow += Flow;
         }
 
         /// <summary>
@@ -108,7 +128,6 @@ namespace kylsim
                 else if (SumFlow < 0)
                     Pressure -= 0.1;
                 SumFlow = 0;
-
             }
         }
 
@@ -116,14 +135,13 @@ namespace kylsim
         /// Displays the specified canvas.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        public void Display(Graphics canvas, Brush brush, Font font)
+        public void Display(Graphics canvas)
         {
             const string twoDecimals = "F1";
-
-            
-            canvas.DrawString(Pressure.ToString(twoDecimals), font, brush, (float)X + 45, (float)Y + 15);
+            canvas.DrawString(Pressure.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 15);
         }
     }
+
     /// <summary>
     /// Valve
     /// </summary>
@@ -133,19 +151,7 @@ namespace kylsim
         private double Position { get; set; }
         private double Admittance { get; set; }
         private double Flow { get; set; }
-        /// <summary>
-        /// Gets or sets the node in.
-        /// </summary>
-        /// <value>
-        /// The node in.
-        /// </value>
         public Node NodeIn { get; set; }
-        /// <summary>
-        /// Gets or sets the node out.
-        /// </summary>
-        /// <value>
-        /// The node out.
-        /// </value>
         public Node NodeOut { get; set; }
 
         /// <summary>
@@ -162,17 +168,18 @@ namespace kylsim
         /// <param name="position">The position.</param>
         /// <param name="admittance">The admittance.</param>
         public Valve(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
-                     double position = 0, double admittance = 10, Node nodeIn = null, Node nodeOut = null)
+                     double position = 0, double admittance = 10, Node nodeIn = null, Node nodeOut = null, VVS next = null)
         {
             Name = name;
             X = x;
             Y = y;
             W = w;
             H = h;
-            NodeIn = nodeIn;
-            NodeOut = nodeOut;
-            Position = position;
+            NodeIn     = nodeIn;
+            NodeOut    = nodeOut;
+            Position   = position;
             Admittance = admittance;
+            Next = next;
         }
 
         /// <summary>
@@ -182,36 +189,37 @@ namespace kylsim
         /// <param name="brush">The brush.</param>
         /// <param name="font">The font.</param>
         /// <param name="pen">The pen.</param>
-        public void Draw(Graphics canvas, Brush brush, Font font, Pen componentPen, Pen linePen)
+        public override void Draw(Graphics canvas)
         {
             const int Ygrad = 10;
             const int Xgrad = 15;
        
             // Draw valve graphics
-            canvas.DrawLine(componentPen, X, Y, X+Xgrad, Y+ Ygrad);
-            canvas.DrawLine(componentPen, X, Y, X+Xgrad, Y - Ygrad);
-            canvas.DrawLine(componentPen, X+Xgrad, Y+Ygrad, X + Xgrad, Y - Ygrad);
-            canvas.DrawLine(componentPen, X,Y, X-Xgrad, Y - Ygrad);
-            canvas.DrawLine(componentPen, X, Y, X-Xgrad, Y + Ygrad);
-            canvas.DrawLine(componentPen, X-Xgrad,  Y-Ygrad, X - Xgrad, Y + Ygrad);
+            canvas.DrawLine(ComponentPen, X, Y, X+Xgrad, Y+ Ygrad);
+            canvas.DrawLine(ComponentPen, X, Y, X+Xgrad, Y - Ygrad);
+            canvas.DrawLine(ComponentPen, X+Xgrad, Y+Ygrad, X + Xgrad, Y - Ygrad);
+            canvas.DrawLine(ComponentPen, X,Y, X-Xgrad, Y - Ygrad);
+            canvas.DrawLine(ComponentPen, X, Y, X-Xgrad, Y + Ygrad);
+            canvas.DrawLine(ComponentPen, X-Xgrad,  Y-Ygrad, X - Xgrad, Y + Ygrad);
 
             // Draw lines
-            canvas.DrawLine(linePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H)/4, NodeIn.Y);
-            canvas.DrawLine(linePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H)/4, NodeOut.Y);
+            canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H)/4, NodeIn.Y);
+            canvas.DrawLine(LinePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H)/4, NodeOut.Y);
 
             // Draw text
-            canvas.DrawString(Name, font, brush, (float)X + 10, (float)Y + -20);
-            canvas.DrawString("vpos : ", font, brush, (float)X + 10, (float)Y + 15);
-            canvas.DrawString("Flow : ", font, brush, (float)X + 10, (float)Y + 25);
+            canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -20);
+            canvas.DrawString("vpos : ", Font, Brush, (float)X + 10, (float)Y + 15);
+            canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 30);
         }
+
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
         public void Dynamics()
         {
-            //Beräkna tryckskillnaden mellan NodeIn och NodeOut
+            // Calculate flow difference
             double PressureDifference;
-            if(NodeIn.Pressure>=NodeOut.Pressure)
+            if (NodeIn.Pressure >= NodeOut.Pressure)
             {
                 PressureDifference = (NodeIn.Pressure - NodeOut.Pressure);
                 Flow = Admittance * Position * (System.Math.Sqrt(PressureDifference));
@@ -219,20 +227,26 @@ namespace kylsim
             else
             {
                 PressureDifference = (NodeOut.Pressure - NodeIn.Pressure);
-                Flow=(-Admittance) * Position * (System.Math.Sqrt(PressureDifference));
+                Flow = (-Admittance) * Position * (System.Math.Sqrt(PressureDifference));
             }
             NodeIn.AddSumFlow(-Flow);
             NodeIn.AddSumFlow(Flow);
         }
-        public void Display(Graphics canvas, Brush brush, Font font)
+
+        /// <summary>
+        /// Displays the specified canvas.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        /// <param name="brush">The brush.</param>
+        /// <param name="font">The font.</param>
+        public void Display(Graphics canvas)
         {
             const string twoDecimals = "F1";
-
-
-            canvas.DrawString(Position.ToString(twoDecimals), font, brush, (float)X + 45, (float)Y + 15);
-            canvas.DrawString(Flow.ToString(twoDecimals), font, brush, (float)X + 45, (float)Y + 25);
+            canvas.DrawString(Position.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 15);
+            canvas.DrawString(Flow.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 30);
         }
     }
+
     /// <summary>
     /// Pump
     /// </summary>
@@ -241,6 +255,7 @@ namespace kylsim
     {
         
     }
+
     /// <summary>
     /// HeatExchanger
     /// </summary>
@@ -249,5 +264,4 @@ namespace kylsim
     {
         
     }
-    
 }
