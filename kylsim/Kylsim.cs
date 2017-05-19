@@ -13,16 +13,38 @@ namespace kylsim
         /// </summary>
         public Kylsim()
         {
+            const int ROW1 = 100;
+            const int ROW2 = 200;
+            const int ROW3 = 300;
+            const int ROW4 = 400;
+            const int COL1 = 100;
+            const int COL2 = 200;
+            const int COL3 = 300;
+            const int COL4 = 400;
+            const int COL5 = 500;
+            const int COL6 = 600;
             // Create Nodes
-            Node node1 = new Node("N1", 100, 200, 10, 10, 5, false, 0, null);
-            Node node2 = new Node("N2", 300, 200, 10, 10, 1, true, 0, node1);
-            Node node3 = new Node("N3", 500, 200, 10, 10, 1, false, 0, node2);
-            RootNodes = node3;
+            Node node1 = new Node("N1", COL1, ROW2, 10, 10, 5, false, 0, null);
+            Node node2 = new Node("N2", COL3, ROW2, 10, 10, 1, true, 0, node1);
+            Node node3 = new Node("N3", COL5, ROW2, 10, 10, 1, false, 0, node2);
+            Node node4 = new Node("N4", COL1, ROW3, 10, 10, 1, false, 0, node3);
+            Node node5 = new Node("N5", COL2, ROW3, 10, 10, 1, false, 0, node4);
+            Node node6 = new Node("N6", COL3, ROW3, 10, 10, 1, false, 0, node5);
+            Node node7 = new Node("N7", COL4, ROW4, 10, 10, 1, false, 0, node6);
+            Node node8 = new Node("N8", COL5, ROW4, 10, 10, 1, false, 0, node7);
+            RootNodes = node8;
 
             //Create valves
-            Valve valve1 = new Valve("V1", 200, 200, 10, 10, 1, 10, node1, node2, null);
-            Valve valve2 = new Valve("V2", 400, 200, 10, 10, 1, 10, node2, node3, valve1);
-            RootComponents = valve2;
+            Valve valve1 = new Valve("V1", COL2, ROW2, 10, 10, 1, 10, node1, node2, null);
+            Valve valve2 = new Valve("V2", COL4, ROW2, 10, 10, 1, 10, node2, node3, valve1);
+            
+            //Create filters
+            //Kod här
+            
+            //Create HeatExchangers
+            //kod här
+
+            RootComponents = valve2; //Ändra till senaste komponenten
         }
 
         /// <summary>
