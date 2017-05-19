@@ -44,6 +44,11 @@ namespace kylsim
                 next = next.Next;
             }
         }
+
+        /// <summary>
+        /// Displays the specified canvas.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
         public void Display(Graphics canvas)
         {
             var next = RootNodes;
@@ -59,6 +64,10 @@ namespace kylsim
                 next = next.Next;
             }
         }
+
+        /// <summary>
+        /// Dynamicses this instance.
+        /// </summary>
         public void Dynamics()
         {
             var next = RootNodes;

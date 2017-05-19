@@ -50,6 +50,11 @@ namespace kylsim
             kylsim.Dynamics();
         }
 
+        /// <summary>
+        /// Handles the Load event of the FormKylsim control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void FormKylsim_Load(object sender, EventArgs e)
         {
 
