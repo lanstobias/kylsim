@@ -46,10 +46,9 @@ namespace kylsim
         /// Draws the specified canvas.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        public virtual void Draw(Graphics canvas)
-        {
-
-        }
+        public virtual void Draw(Graphics canvas) {}
+        public virtual void Display(Graphics canvas) { }
+        public virtual void Dynamics() { }
     }
 
     /// <summary>
@@ -119,7 +118,7 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public void Dynamics()
+        public override void Dynamics()
         {
             if (Adjustable)
             {
@@ -135,7 +134,7 @@ namespace kylsim
         /// Displays the specified canvas.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        public void Display(Graphics canvas)
+        public override void Display(Graphics canvas)
         {
             const string twoDecimals = "F1";
             canvas.DrawString(Pressure.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 15);
@@ -207,7 +206,7 @@ namespace kylsim
             canvas.DrawLine(LinePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H)/4, NodeOut.Y);
 
             // Draw text
-            canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -20);
+            canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -25);
             canvas.DrawString("vpos : ", Font, Brush, (float)X + 10, (float)Y + 15);
             canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 30);
         }
@@ -215,7 +214,7 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public void Dynamics()
+        public override void Dynamics()
         {
             // Calculate flow difference
             double PressureDifference;
@@ -230,7 +229,7 @@ namespace kylsim
                 Flow = (-Admittance) * Position * (System.Math.Sqrt(PressureDifference));
             }
             NodeIn.AddSumFlow(-Flow);
-            NodeIn.AddSumFlow(Flow);
+            NodeOut.AddSumFlow(Flow);
         }
 
         /// <summary>
@@ -239,7 +238,7 @@ namespace kylsim
         /// <param name="canvas">The canvas.</param>
         /// <param name="brush">The brush.</param>
         /// <param name="font">The font.</param>
-        public void Display(Graphics canvas)
+        public override void Display(Graphics canvas)
         {
             const string twoDecimals = "F1";
             canvas.DrawString(Position.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 15);

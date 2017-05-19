@@ -46,6 +46,8 @@ namespace kylsim
         private void timer_Tick(object sender, EventArgs e)
         {
             this.Refresh();
+            kylsim.Display(canvas);
+            kylsim.Dynamics();
         }
 
         private void FormKylsim_Load(object sender, EventArgs e)

@@ -44,5 +44,36 @@ namespace kylsim
                 next = next.Next;
             }
         }
+        public void Display(Graphics canvas)
+        {
+            var next = RootNodes;
+            while (next != null)
+            {
+                next.Display(canvas);
+                next = next.Next;
+            }
+            next = RootComponents;
+            while (next != null)
+            {
+                next.Display(canvas);
+                next = next.Next;
+            }
+        }
+        public void Dynamics()
+        {
+            var next = RootNodes;
+            while (next != null)
+            {
+               
+                next.Dynamics();
+                next = next.Next;
+            }
+            next = RootComponents;
+            while (next != null)
+            {
+                next.Dynamics();
+                next = next.Next;
+            }
+        }
     }
 }
