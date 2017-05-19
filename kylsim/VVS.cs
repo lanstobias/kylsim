@@ -201,7 +201,8 @@ namespace kylsim
 
             // Draw text
             canvas.DrawString(Name, font, brush, (float)X + 10, (float)Y + -20);
-            canvas.DrawString("Jag är en fin ventil :3 ", font, brush, (float)X + 10, (float)Y + 15);
+            canvas.DrawString("vpos : ", font, brush, (float)X + 10, (float)Y + 15);
+            canvas.DrawString("Flow : ", font, brush, (float)X + 10, (float)Y + 25);
         }
         /// <summary>
         /// Dynamicses this instance.
@@ -222,6 +223,14 @@ namespace kylsim
             }
             NodeIn.AddSumFlow(-Flow);
             NodeIn.AddSumFlow(Flow);
+        }
+        public void Display(Graphics canvas, Brush brush, Font font)
+        {
+            const string twoDecimals = "F1";
+
+
+            canvas.DrawString(Position.ToString(twoDecimals), font, brush, (float)X + 45, (float)Y + 15);
+            canvas.DrawString(Flow.ToString(twoDecimals), font, brush, (float)X + 45, (float)Y + 25);
         }
     }
     /// <summary>

@@ -54,6 +54,7 @@ namespace kylsim
 
             // Draw valve
             valve1.Draw(canvas, Brush, Font, ComponentPen, LinePen);
+            valve1.Display(canvas, Brush, Font);
         }
 
         /// <summary>
@@ -67,6 +68,7 @@ namespace kylsim
             node1.Display(canvas, Brush, Font);
             node2.Display(canvas, Brush, Font);
             node3.Display(canvas, Brush, Font);
+            
         }
 
         private void FormKylsim_Load(object sender, EventArgs e)
