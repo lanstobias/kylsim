@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace kylsim
 {
+    /// <summary>
+    /// VVS
+    /// </summary>
     public class VVS
     {
         public string Name { get; protected set; }
@@ -31,10 +34,13 @@ namespace kylsim
             H = h;
         }
     }
-
+    /// <summary>
+    /// Node
+    /// </summary>
+    /// <seealso cref="kylsim.VVS" />
     public class Node : VVS
     {
-        private double Pressure { get; set; }
+        public double Pressure { get; private set; }
         private bool Adjustable { get; set; }
         public double SumFlow { get; private set; }
 
@@ -85,9 +91,9 @@ namespace kylsim
         /// <param name="inFlow">The in flow.</param>
         /// <param name="outFlow">The out flow.</param>
         /// <returns></returns>
-        public void AddSumflode(double inFlow, double outFlow)
+        public void AddSumFlow(double Flow)
         {
-            SumFlow = (inFlow + outFlow);
+            SumFlow +=Flow;
         }
 
         /// <summary>
@@ -118,13 +124,29 @@ namespace kylsim
             canvas.DrawString(Pressure.ToString(twoDecimals), font, brush, (float)X + 45, (float)Y + 15);
         }
     }
-
+    /// <summary>
+    /// Valve
+    /// </summary>
+    /// <seealso cref="kylsim.VVS" />
     public class Valve : VVS
     {
         private double Position { get; set; }
         private double Admittance { get; set; }
-        public VVS NodeIn { get; set; }
-        public VVS NodeOut { get; set; }
+        private double Flow { get; set; }
+        /// <summary>
+        /// Gets or sets the node in.
+        /// </summary>
+        /// <value>
+        /// The node in.
+        /// </value>
+        public Node NodeIn { get; set; }
+        /// <summary>
+        /// Gets or sets the node out.
+        /// </summary>
+        /// <value>
+        /// The node out.
+        /// </value>
+        public Node NodeOut { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Valve"/> class.
@@ -140,7 +162,7 @@ namespace kylsim
         /// <param name="position">The position.</param>
         /// <param name="admittance">The admittance.</param>
         public Valve(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
-                     double position = 0, double admittance = 10, VVS nodeIn = null, VVS nodeOut = null)
+                     double position = 0, double admittance = 10, Node nodeIn = null, Node nodeOut = null)
         {
             Name = name;
             X = x;
@@ -181,13 +203,39 @@ namespace kylsim
             canvas.DrawString(Name, font, brush, (float)X + 10, (float)Y + -20);
             canvas.DrawString("Jag är en fin ventil :3 ", font, brush, (float)X + 10, (float)Y + 15);
         }
+        /// <summary>
+        /// Dynamicses this instance.
+        /// </summary>
+        public void Dynamics()
+        {
+            //Beräkna tryckskillnaden mellan NodeIn och NodeOut
+            double PressureDifference;
+            if(NodeIn.Pressure>=NodeOut.Pressure)
+            {
+                PressureDifference = (NodeIn.Pressure - NodeOut.Pressure);
+                Flow = Admittance * Position * (System.Math.Sqrt(PressureDifference));
+            }
+            else
+            {
+                PressureDifference = (NodeOut.Pressure - NodeIn.Pressure);
+                Flow=(-Admittance) * Position * (System.Math.Sqrt(PressureDifference));
+            }
+            NodeIn.AddSumFlow(-Flow);
+            NodeIn.AddSumFlow(Flow);
+        }
     }
-
+    /// <summary>
+    /// Pump
+    /// </summary>
+    /// <seealso cref="kylsim.VVS" />
     public class Pump : VVS
     {
         
     }
-
+    /// <summary>
+    /// HeatExchanger
+    /// </summary>
+    /// <seealso cref="kylsim.VVS" />
     public class HeatExchanger : VVS
     {
         

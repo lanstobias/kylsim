@@ -10,6 +10,10 @@ using System.Windows.Forms;
 
 namespace kylsim
 {
+    /// <summary>
+    /// FormKylsim
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Form" />
     public partial class FormKylsim : Form
     {
         // Create graphics
