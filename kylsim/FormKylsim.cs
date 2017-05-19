@@ -10,10 +10,8 @@ using System.Windows.Forms;
 
 namespace kylsim
 {
-
     public partial class FormKylsim : Form
     {
-
         // Create graphics
         private Graphics canvas;
         Brush Brush      = new SolidBrush(Color.Black);
