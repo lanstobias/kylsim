@@ -268,7 +268,42 @@ namespace kylsim
     /// Filter
     /// </summary>
     public class Filter
+    public class Filter : VVS
     {
+        private double Opening { get; set; }
+        private double Flow { get; set; }
+        private double G { get; set; }
+        public Node NodeIn { get; set; }
+        public Node NodeOut { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Filter"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="w">The w.</param>
+        /// <param name="h">The h.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="admittance">The admittance.</param>
+        /// <param name="nodeIn">The node in.</param>
+        /// <param name="nodeOut">The node out.</param>
+        /// <param name="next">The next.</param>
+        public Filter(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
+                      double opening = 0, double g = 0,
+                      Node nodeIn = null, Node nodeOut = null, VVS next = null)
+        {
+            Name = name;
+            X = x;
+            Y = y;
+            W = w;
+            H = h;
+            Opening = opening;
+            G = g;
+            NodeIn  = nodeIn;
+            NodeOut = nodeOut;
+            Next    = next;
+        }
 
     }
 }
