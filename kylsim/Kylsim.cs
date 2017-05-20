@@ -39,12 +39,12 @@ namespace kylsim
             Valve valve2 = new Valve("V2", COL4, ROW2, 10, 10, 1, 10, node2, node3, valve1);
             
             //Create filters
-            //Kod här
+            Filter filter1 = new Filter("F1", COL1, ROW1, 10, 10, 0.3, 0.001, null, null, valve2);
             
             //Create HeatExchangers
             //kod här
 
-            RootComponents = valve2; //Ändra till senaste komponenten
+            RootComponents = filter1; //Ändra till senaste komponenten
         }
 
         /// <summary>
