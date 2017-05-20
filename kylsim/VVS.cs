@@ -305,5 +305,37 @@ namespace kylsim
             Next    = next;
         }
 
+        /// <summary>
+        /// Draws the specified canvas.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        public override void Draw(Graphics canvas)
+        {
+            const int height = 20;
+            const int width = 30;
+
+            // Left wall / Right wall
+            canvas.DrawLine(ComponentPen, X,         Y, X,         Y + height);
+            canvas.DrawLine(ComponentPen, X + width, Y, X + width, Y + height);
+
+            // Top / Bottom
+            canvas.DrawLine(ComponentPen, X, Y,          X + width, Y         );
+            canvas.DrawLine(ComponentPen, X, Y + height, X + width, Y + height);
+
+            // Inside
+            canvas.DrawLine(ComponentPen, X + 5, Y, X + 5, Y + (height - 5));
+            canvas.DrawLine(ComponentPen, X + (width - 5), Y, X + (width - 5), Y + (height - 5));
+            canvas.DrawLine(ComponentPen, X + (width/2), Y + height, X + (width/2), Y + 5);
+
+            // TODO: Set position
+            // Draw lines
+            //canvas.DrawLine(LinePen, X, Y, NodeIn.X + ((NodeIn.W  + NodeIn.H)/4), NodeIn.Y);
+            //canvas.DrawLine(LinePen, X, Y, NodeOut.X + ((NodeOut.W + NodeOut.H)/4), NodeOut.Y);
+
+            // Draw text
+            canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -25);
+            canvas.DrawString("vpos : ", Font, Brush, (float)X + 10, (float)Y + 15);
+            canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 30);
+        }
     }
 }
