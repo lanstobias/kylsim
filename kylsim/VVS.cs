@@ -261,13 +261,100 @@ namespace kylsim
     /// <seealso cref="kylsim.VVS" />
     public class HeatExchanger : VVS
     {
-        
+        private const double Position = 1;
+        private double Admittance { get; set; }
+        private double Flow { get; set; }
+        public Node NodeIn { get; set; }
+        public Node NodeOut { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HeatExchanger"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="w">The w.</param>
+        /// <param name="h">The h.</param>
+        /// <param name="admittance">The admittance.</param>
+        /// <param name="nodeIn">The node in.</param>
+        /// <param name="nodeOut">The node out.</param>
+        /// <param name="next">The next.</param>
+        public HeatExchanger(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
+                      double admittance = 5, Node nodeIn = null, Node nodeOut = null, VVS next = null)
+        {
+            Name = name;
+            X = x;
+            Y = y;
+            W = w;
+            H = h;
+            Admittance = admittance;
+            NodeIn = nodeIn;
+            NodeOut = nodeOut;
+            Next = next;
+        }
+        /// <summary>
+        /// Draws the specified canvas.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        public override void Draw(Graphics canvas)
+        {
+            const int Ygrad = 20;
+            const int Xgrad = 10;
+
+            // Draw HeatExchanger graphics
+            canvas.DrawLine(ComponentPen, X - Xgrad, Y - Ygrad, X - Xgrad, Y + Ygrad); //vänsterlinje
+            canvas.DrawLine(ComponentPen, X - Xgrad, Y - Ygrad, X + Xgrad, Y - Ygrad); //övrelinje
+            canvas.DrawLine(ComponentPen, X - Xgrad, Y - Ygrad, X + Xgrad, Y - 8); //snedd linje 1
+            canvas.DrawLine(ComponentPen, X + Xgrad, Y - 8, X - Xgrad, Y + 2); //snedd linje 2
+            canvas.DrawLine(ComponentPen, X - Xgrad, Y + 2, X + Xgrad, Y + 11); //snedd linje 3
+            canvas.DrawLine(ComponentPen, X + Xgrad, Y + 11, X - Xgrad, Y + 20 ); //snedd linje 4
+
+            canvas.DrawLine(ComponentPen, X + Xgrad, Y + Ygrad, X + Xgrad, Y - Ygrad); //högerlinje
+            canvas.DrawLine(ComponentPen, X + Xgrad, Y + Ygrad, X - Xgrad, Y + Ygrad); //nedrelinje
+            
+            // Draw lines
+            canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, NodeIn.Y);
+            canvas.DrawLine(LinePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H) / 4, NodeOut.Y);
+
+            // Draw text
+            canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -25);
+            canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 15);
+        }
+        /// <summary>
+        /// Dynamicses this instance.
+        /// </summary>
+        public override void Dynamics()
+        {
+            // Calculate flow difference
+            double PressureDifference;
+            if (NodeIn.Pressure >= NodeOut.Pressure)
+            {
+                PressureDifference = (NodeIn.Pressure - NodeOut.Pressure);
+                Flow = Admittance * Position * (System.Math.Sqrt(PressureDifference));
+            }
+            else
+            {
+                PressureDifference = (NodeOut.Pressure - NodeIn.Pressure);
+                Flow = (-Admittance) * Position * (System.Math.Sqrt(PressureDifference));
+            }
+            NodeIn.AddSumFlow(-Flow);
+            NodeOut.AddSumFlow(Flow);
+        }
+        /// <summary>
+        /// Displays the specified canvas.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        public override void Display(Graphics canvas)
+        {
+            const string twoDecimals = "F1";
+            canvas.DrawString(Flow.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 15);
+        }
     }
 
-    /// <summary>
-    /// Filter
-    /// </summary>
-    public class Filter
+        /// <summary>
+        /// Filter
+        /// </summary>
+        public class Filter
     {
 
     }
