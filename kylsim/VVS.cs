@@ -280,7 +280,7 @@ namespace kylsim
         /// <param name="nodeOut">The node out.</param>
         /// <param name="next">The next.</param>
         public HeatExchanger(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
-                      double admittance = 5, Node nodeIn = null, Node nodeOut = null, VVS next = null)
+                      double admittance = 10, Node nodeIn = null, Node nodeOut = null, VVS next = null)
         {
             Name = name;
             X = x;
