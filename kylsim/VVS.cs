@@ -423,9 +423,9 @@ namespace kylsim
             canvas.DrawLine(LinePen, X, Y, NodeOut.X + ((NodeOut.W + NodeOut.H) / 4), NodeOut.Y);
 
             // Draw text
-            canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -25);
-            canvas.DrawString("vpos : ", Font, Brush, (float)X + 10, (float)Y + 15);
-            canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 30);
+            canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y - 15);
+            canvas.DrawString("vpos : ", Font, Brush, (float)X + 10, (float)Y + 25);
+            canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 40);
         }
 
         /// <summary>
