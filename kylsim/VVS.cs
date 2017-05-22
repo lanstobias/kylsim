@@ -292,6 +292,7 @@ namespace kylsim
             NodeOut = nodeOut;
             Next = next;
         }
+
         /// <summary>
         /// Draws the specified canvas.
         /// </summary>
@@ -320,6 +321,7 @@ namespace kylsim
             canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -25);
             canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 15);
         }
+
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
@@ -340,6 +342,7 @@ namespace kylsim
             NodeIn.AddSumFlow(-Flow);
             NodeOut.AddSumFlow(Flow);
         }
+
         /// <summary>
         /// Displays the specified canvas.
         /// </summary>
