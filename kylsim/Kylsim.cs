@@ -44,6 +44,7 @@ namespace kylsim
             //Create HeatExchangers
             //kod här
 
+            RootComponents = heatExchanger1; //Ändra till senaste komponenten
         }
 
         /// <summary>
