@@ -36,6 +36,8 @@ namespace kylsim
         private void FormKylsim_Paint(object sender, PaintEventArgs e)
         {
             kylsim.Draw(canvas);
+            kylsim.Dynamics();
+            kylsim.Display(canvas);
         }
 
         /// <summary>
@@ -46,8 +48,6 @@ namespace kylsim
         private void timer_Tick(object sender, EventArgs e)
         {
             this.Refresh();
-            kylsim.Display(canvas);
-            kylsim.Dynamics();
         }
 
         /// <summary>
