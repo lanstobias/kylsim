@@ -415,10 +415,9 @@ namespace kylsim
             canvas.DrawLine(ComponentPen, X + (width - 5), Y, X + (width - 5), Y + (height - 5));
             canvas.DrawLine(ComponentPen, X + (width/2), Y + height, X + (width/2), Y + 5);
 
-            // TODO: Set position
             // Draw lines
-            //canvas.DrawLine(LinePen, X, Y, NodeIn.X + ((NodeIn.W  + NodeIn.H)/4), NodeIn.Y);
-            //canvas.DrawLine(LinePen, X, Y, NodeOut.X + ((NodeOut.W + NodeOut.H)/4), NodeOut.Y);
+            canvas.DrawLine(LinePen, X, Y, NodeIn.X + ((NodeIn.W + NodeIn.H) / 4), NodeIn.Y);
+            canvas.DrawLine(LinePen, X, Y, NodeOut.X + ((NodeOut.W + NodeOut.H) / 4), NodeOut.Y);
 
             // Draw text
             canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -25);
