@@ -351,10 +351,10 @@ namespace kylsim
         }
     }
 
-        /// <summary>
-        /// Filter
-        /// </summary>
-        public class Filter
+    /// <summary>
+    /// Filter
+    /// </summary>
+    public class Filter
     {
 
     }
