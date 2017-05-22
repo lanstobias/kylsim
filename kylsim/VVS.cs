@@ -425,5 +425,36 @@ namespace kylsim
             canvas.DrawString("vpos : ", Font, Brush, (float)X + 10, (float)Y + 15);
             canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 30);
         }
+
+        /// <summary>
+        /// Dynamicses this instance.
+        /// </summary>
+        public override void Dynamics()
+        {
+            // Calculate flow difference
+            double PressureDifference;
+            if (NodeIn.Pressure >= NodeOut.Pressure)
+            {
+                PressureDifference = (NodeIn.Pressure - NodeOut.Pressure);
+                Flow = Admittance * Opening * (System.Math.Sqrt(PressureDifference));
+            }
+            else
+            {
+                PressureDifference = (NodeOut.Pressure - NodeIn.Pressure);
+                Flow = (-Admittance) * Opening * (System.Math.Sqrt(PressureDifference));
+            }
+            NodeIn.AddSumFlow(-Flow);
+            NodeOut.AddSumFlow(Flow);
+        }
+
+        /// <summary>
+        /// Displays the specified canvas.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        public override void Display(Graphics canvas)
+        {
+            const string twoDecimals = "F1";
+            canvas.DrawString(Flow.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 15);
+        }
     }
 }
