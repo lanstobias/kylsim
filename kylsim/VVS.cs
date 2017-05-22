@@ -19,6 +19,8 @@ namespace kylsim
         // Graphics
         protected Font Font        = new Font("Courier", 8);
         protected Brush Brush      = new SolidBrush(Color.Black);
+        protected Brush GrayBrush  = new SolidBrush(Color.Gray);
+        protected Brush RedBrush   = new SolidBrush(Color.Red);
         protected Pen LinePen      = new Pen(Color.Blue);
         protected Pen ComponentPen = new Pen(Color.Red);
 
@@ -363,8 +365,10 @@ namespace kylsim
         private double Flow { get; set; }
         private double Admittance { get; set; }
         private double G { get; set; }
+        private bool Full = false;
         public Node NodeIn { get; set; }
         public Node NodeOut { get; set; }
+        private bool RensaRed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Filter"/> class.
@@ -426,6 +430,8 @@ namespace kylsim
             canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y - 15);
             canvas.DrawString("vpos : ", Font, Brush, (float)X + 10, (float)Y + 25);
             canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 40);
+
+            DrawRensa(canvas);
         }
 
         /// <summary>
@@ -447,6 +453,14 @@ namespace kylsim
             }
             NodeIn.AddSumFlow(-Flow);
             NodeOut.AddSumFlow(Flow);
+
+            // 
+            Opening = Opening - G * Flow;
+            if (Opening < 0.5)
+            {
+                Full = true;
+            }
+
         }
 
         /// <summary>
@@ -457,6 +471,28 @@ namespace kylsim
         {
             const string twoDecimals = "F1";
             canvas.DrawString(Flow.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 25);
+        }
+
+        public void DrawRensa(Graphics canvas)
+        {
+            string str = "Rensa";
+            if (!Full)
+            {
+                canvas.DrawString(str, Font, GrayBrush, (float)X + 10, (float)Y - 35);
+            }
+            else if (Full)
+            {
+                if (RensaRed)
+                { 
+                    canvas.DrawString(str, Font, RedBrush, (float)X + 10, (float)Y - 35);
+                    RensaRed = false;
+                }
+                else
+                {
+                    canvas.DrawString(str, Font, GrayBrush, (float)X + 10, (float)Y - 35);
+                    RensaRed = true;
+                }
+            }
         }
     }
 }
