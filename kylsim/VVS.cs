@@ -354,7 +354,6 @@ namespace kylsim
     /// <summary>
     /// Filter
     /// </summary>
-    public class Filter
     public class Filter : VVS
     {
         private double Opening { get; set; }
@@ -400,7 +399,6 @@ namespace kylsim
         {
             const int height = 20;
             const int width = 30;
-    {
 
             // Left wall / Right wall
             canvas.DrawLine(ComponentPen, X,         Y, X,         Y + height);
