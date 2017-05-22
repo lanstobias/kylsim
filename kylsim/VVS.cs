@@ -298,19 +298,19 @@ namespace kylsim
         /// <param name="canvas">The canvas.</param>
         public override void Draw(Graphics canvas)
         {
-            const int Ygrad = 20;
-            const int Xgrad = 10;
+            const int height = 20;
+            const int width = 10;
 
             // Draw HeatExchanger graphics
-            canvas.DrawLine(ComponentPen, X - Xgrad, Y - Ygrad, X - Xgrad, Y + Ygrad); //vänsterlinje
-            canvas.DrawLine(ComponentPen, X - Xgrad, Y - Ygrad, X + Xgrad, Y - Ygrad); //övrelinje
-            canvas.DrawLine(ComponentPen, X - Xgrad, Y - Ygrad, X + Xgrad, Y - 8); //snedd linje 1
-            canvas.DrawLine(ComponentPen, X + Xgrad, Y - 8, X - Xgrad, Y + 2); //snedd linje 2
-            canvas.DrawLine(ComponentPen, X - Xgrad, Y + 2, X + Xgrad, Y + 11); //snedd linje 3
-            canvas.DrawLine(ComponentPen, X + Xgrad, Y + 11, X - Xgrad, Y + 20 ); //snedd linje 4
+            canvas.DrawLine(ComponentPen, X - width, Y - height, X - width, Y + height); //vänsterlinje
+            canvas.DrawLine(ComponentPen, X - width, Y - height, X + width, Y - height); //övrelinje
+            canvas.DrawLine(ComponentPen, X - width, Y - height, X + width, Y - 8); //snedd linje 1
+            canvas.DrawLine(ComponentPen, X + width, Y - 8, X - width, Y + 2); //snedd linje 2
+            canvas.DrawLine(ComponentPen, X - width, Y + 2, X + width, Y + 11); //snedd linje 3
+            canvas.DrawLine(ComponentPen, X + width, Y + 11, X - width, Y + height ); //snedd linje 4
 
-            canvas.DrawLine(ComponentPen, X + Xgrad, Y + Ygrad, X + Xgrad, Y - Ygrad); //högerlinje
-            canvas.DrawLine(ComponentPen, X + Xgrad, Y + Ygrad, X - Xgrad, Y + Ygrad); //nedrelinje
+            canvas.DrawLine(ComponentPen, X + width, Y + height, X + width, Y - height); //högerlinje
+            canvas.DrawLine(ComponentPen, X + width, Y + height, X - width, Y + height); //nedrelinje
             
             // Draw lines
             canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, NodeIn.Y);
