@@ -419,8 +419,8 @@ namespace kylsim
             canvas.DrawLine(ComponentPen, X + (width/2), Y + height, X + (width/2), Y + 5);
 
             // Draw lines
-            canvas.DrawLine(LinePen, X, Y, NodeIn.X + ((NodeIn.W + NodeIn.H) / 4), NodeIn.Y);
-            canvas.DrawLine(LinePen, X, Y, NodeOut.X + ((NodeOut.W + NodeOut.H) / 4), NodeOut.Y);
+            canvas.DrawLine(LinePen, X + (width / 2), Y + (height/2), NodeIn.X + ((NodeIn.W + NodeIn.H) / 4), NodeIn.Y);
+            canvas.DrawLine(LinePen, X + (width / 2), Y + (height /2), NodeOut.X + ((NodeOut.W + NodeOut.H) / 4), NodeOut.Y);
 
             // Draw text
             canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y - 15);
@@ -456,7 +456,7 @@ namespace kylsim
         public override void Display(Graphics canvas)
         {
             const string twoDecimals = "F1";
-            canvas.DrawString(Flow.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 15);
+            canvas.DrawString(Flow.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 25);
         }
     }
 }

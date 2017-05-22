@@ -39,7 +39,8 @@ namespace kylsim
             Valve valve2 = new Valve("V2", COL4, ROW2, 10, 10, 1, 10, node2, node3, valve1);
 
             //Create filters
-            Filter filter1 = new Filter("F1", COL4, ROW2, 10, 10, 1, 10, 10, node2, node3, valve1);
+            const int PUSH_UP = 10;
+            Filter filter1 = new Filter("F1", COL4, ROW2 - PUSH_UP, 10, 10, 1, 10, 10, node2, node3, valve1);
 
             //Create HeatExchangers
             //kod här
