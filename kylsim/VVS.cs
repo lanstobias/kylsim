@@ -358,6 +358,7 @@ namespace kylsim
     {
         private double Opening { get; set; }
         private double Flow { get; set; }
+        private double Admittance { get; set; }
         private double G { get; set; }
         public Node NodeIn { get; set; }
         public Node NodeOut { get; set; }
@@ -376,7 +377,7 @@ namespace kylsim
         /// <param name="nodeOut">The node out.</param>
         /// <param name="next">The next.</param>
         public Filter(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
-                      double opening = 0, double g = 0,
+                      double opening = 0, double g = 0, double admittance = 10,
                       Node nodeIn = null, Node nodeOut = null, VVS next = null)
         {
             Name = name;
@@ -389,6 +390,7 @@ namespace kylsim
             NodeIn  = nodeIn;
             NodeOut = nodeOut;
             Next    = next;
+            admittance = Admittance;
         }
 
         /// <summary>
