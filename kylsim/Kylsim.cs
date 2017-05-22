@@ -43,8 +43,8 @@ namespace kylsim
             Filter filter1 = new Filter("F1", COL4, ROW2 - PUSH_UP, 10, 10, 1, 10, 10, node2, node3, valve1);
 
             //Create HeatExchangers
-            //kod här
-            HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL5+5, ROW3, 10, 10, 10, node3, node8, filter1);
+            const int PUSH_SIDE = 5;
+            HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL5 + PUSH_SIDE, ROW3, 10, 10, 10, node3, node8, filter1);
             RootComponents = heatExchanger1; //Ändra till senaste komponenten
         }
 
