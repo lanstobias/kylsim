@@ -397,7 +397,7 @@ namespace kylsim
             NodeIn  = nodeIn;
             NodeOut = nodeOut;
             Next    = next;
-            admittance = Admittance;
+            Admittance = admittance;
         }
 
         /// <summary>
