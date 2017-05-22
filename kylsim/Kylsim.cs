@@ -26,7 +26,7 @@ namespace kylsim
             // Create Nodes
             Node node1 = new Node("N1", COL1, ROW2, 10, 10, 5, false, 0, null);
             Node node2 = new Node("N2", COL3, ROW2, 10, 10, 1, true, 0, node1);
-            Node node3 = new Node("N3", COL5, ROW2, 10, 10, 1, false, 0, node2);
+            Node node3 = new Node("N3", COL5, ROW2, 10, 10, 1, true, 0, node2);
             Node node4 = new Node("N4", COL1, ROW3, 10, 10, 1, false, 0, node3);
             Node node5 = new Node("N5", COL2, ROW3, 10, 10, 1, false, 0, node4);
             Node node6 = new Node("N6", COL3, ROW3, 10, 10, 1, false, 0, node5);
@@ -37,13 +37,13 @@ namespace kylsim
             //Create valves
             Valve valve1 = new Valve("V1", COL2, ROW2, 10, 10, 1, 10, node1, node2, null);
             Valve valve2 = new Valve("V2", COL4, ROW2, 10, 10, 1, 10, node2, node3, valve1);
-            
+
             //Create filters
-            Filter filter1 = new Filter("F1", COL1, ROW1, 10, 10, 0.3, 0.001, null, null, valve2);
-            
+            //Kod här
+
             //Create HeatExchangers
             //kod här
-
+            HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL5+5, ROW3, 10, 10, 10, node3, node8, valve2);
             RootComponents = heatExchanger1; //Ändra till senaste komponenten
         }
 
