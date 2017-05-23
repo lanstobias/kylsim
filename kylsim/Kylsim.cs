@@ -24,6 +24,7 @@ namespace kylsim
             const int COL4 = 400;
             const int COL5 = 500;
             const int COL6 = 600;
+
             // Create Nodes
             Node node1 = new Node("N1", COL1, ROW2, 10, 10, 5, false, 0, null);
             Node node2 = new Node("N2", COL3, ROW2, 10, 10, 1, true, 0, node1);
@@ -46,7 +47,9 @@ namespace kylsim
             //Create HeatExchangers
             const int PUSH_SIDE = 5;
             HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL5 + PUSH_SIDE, ROW3, 10, 20, 10, node3, node8, filter1);
-            RootComponents = heatExchanger1; //Ändra till senaste komponenten
+
+            // Change to last component in the chain
+            RootComponents = heatExchanger1;
         }
 
         /// <summary>
