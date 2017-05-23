@@ -19,6 +19,7 @@ namespace kylsim
 
         // Graphics
         protected Font Font        = new Font("Courier", 8);
+        protected Font FontBold    = new Font("Arial", 8, FontStyle.Bold);
         protected Brush Brush      = new SolidBrush(Color.Black);
         protected Brush GrayBrush  = new SolidBrush(Color.Gray);
         protected Brush RedBrush   = new SolidBrush(Color.Red);
