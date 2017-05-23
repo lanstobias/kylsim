@@ -44,7 +44,7 @@ namespace kylsim
 
             //Create HeatExchangers
             const int PUSH_SIDE = 5;
-            HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL5 + PUSH_SIDE, ROW3, 10, 10, 10, node3, node8, filter1);
+            HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL5 + PUSH_SIDE, ROW3, 10, 20, 10, node3, node8, filter1);
             RootComponents = heatExchanger1; //Ändra till senaste komponenten
         }
 

@@ -280,7 +280,7 @@ namespace kylsim
         /// <param name="nodeIn">The node in.</param>
         /// <param name="nodeOut">The node out.</param>
         /// <param name="next">The next.</param>
-        public HeatExchanger(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
+        public HeatExchanger(string name = "", float x = 0, float y = 0, float w = 10, float h = 20,
                       double admittance = 10, Node nodeIn = null, Node nodeOut = null, VVS next = null)
         {
             Name = name;
@@ -300,19 +300,17 @@ namespace kylsim
         /// <param name="canvas">The canvas.</param>
         public override void Draw(Graphics canvas)
         {
-            const int height = 20;
-            const int width = 10;
-
+            
             // Draw HeatExchanger graphics
-            canvas.DrawLine(ComponentPen, X - width, Y - height, X - width, Y + height); //vänsterlinje
-            canvas.DrawLine(ComponentPen, X - width, Y - height, X + width, Y - height); //övrelinje
-            canvas.DrawLine(ComponentPen, X - width, Y - height, X + width, Y - 8); //snedd linje 1
-            canvas.DrawLine(ComponentPen, X + width, Y - 8, X - width, Y + 2); //snedd linje 2
-            canvas.DrawLine(ComponentPen, X - width, Y + 2, X + width, Y + 11); //snedd linje 3
-            canvas.DrawLine(ComponentPen, X + width, Y + 11, X - width, Y + height ); //snedd linje 4
+            canvas.DrawLine(ComponentPen, X - W, Y - H, X - W, Y + H); //vänsterlinje
+            canvas.DrawLine(ComponentPen, X - W, Y - H, X + W, Y - H); //övrelinje
+            canvas.DrawLine(ComponentPen, X - W, Y - H, X + W, Y - (H / 2 - H / 10)); //snedd linje 1
+            canvas.DrawLine(ComponentPen, X + W, Y - (H / 2 - H / 10), X - W, Y + (H/10)); //snedd linje 2
+            canvas.DrawLine(ComponentPen, X - W, Y + (H/10), X + W, Y + (H/2)); //snedd linje 3
+            canvas.DrawLine(ComponentPen, X + W, Y + (H/2), X - W, Y + H ); //snedd linje 4
 
-            canvas.DrawLine(ComponentPen, X + width, Y + height, X + width, Y - height); //högerlinje
-            canvas.DrawLine(ComponentPen, X + width, Y + height, X - width, Y + height); //nedrelinje
+            canvas.DrawLine(ComponentPen, X + W, Y + H, X + W, Y - H); //högerlinje
+            canvas.DrawLine(ComponentPen, X + W, Y + H, X - W, Y + H); //nedrelinje
             
             // Draw lines
             canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, NodeIn.Y);
