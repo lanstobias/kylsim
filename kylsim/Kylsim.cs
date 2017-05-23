@@ -112,12 +112,12 @@ namespace kylsim
         /// <summary>
         /// Displays the menu.
         /// </summary>
-        public void DisplayMenu(MouseEventArgs e)
+        public void DisplayMenu(MouseEventArgs e, Control ctrl)
         {
             var next = RootComponents;
             while (next != null)
             {
-                next.DisplayMenu(e.X, e.Y);
+                next.DisplayMenu(e.X, e.Y, ctrl);
                 next = next.Next;
             }
         }

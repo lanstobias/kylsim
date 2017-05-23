@@ -64,9 +64,14 @@ namespace kylsim
         {
         }
 
+        /// <summary>
+        /// Handles the MouseDown event of the FormKylsim control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
         private void FormKylsim_MouseDown(object sender, MouseEventArgs e)
         {
-            kylsim.DisplayMenu(e);
+            kylsim.DisplayMenu(e, this);
         }
     }
 }

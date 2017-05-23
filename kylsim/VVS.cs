@@ -53,7 +53,7 @@ namespace kylsim
         public virtual void Draw(Graphics canvas) {}
         public virtual void Display(Graphics canvas) { }
         public virtual void Dynamics() { }
-        public virtual void DisplayMenu(int clickX, int clickY) { }
+        public virtual void DisplayMenu(int clickX, int clickY, Control ctrl) { }
     }
 
     /// <summary>
@@ -253,19 +253,18 @@ namespace kylsim
         /// Displays the menu.
         /// </summary>
         /// <param name="menu">The menu.</param>
-        public override void DisplayMenu(int clickX, int clickY)
+        public override void DisplayMenu(int clickX, int clickY, Control ctrl)
         {
             // Check if mouse click is inside the component box
-            //if ((clickX >= X && clickX <= W) && (clickY >= Y && clickY <= H))
-            //{
-                MessageBox.Show("Click");
+            if ((clickX >= X-W && clickX <= X+W) && (clickY >= Y-H && clickY <= Y+H))
+            {
                 ContextMenu menu = new ContextMenu();
                 menu.MenuItems.Add("Öppna");
                 menu.MenuItems.Add("Stäng");
-            //}
+                menu.Show(ctrl, new Point(clickX, clickY));
+            }
         }
     }
-
     /// <summary>
     /// Pump
     /// </summary>
