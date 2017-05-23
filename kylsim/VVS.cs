@@ -383,7 +383,7 @@ namespace kylsim
         /// <param name="nodeIn">The node in.</param>
         /// <param name="nodeOut">The node out.</param>
         /// <param name="next">The next.</param>
-        public Filter(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
+        public Filter(string name = "", float x = 0, float y = 0, float w = 30, float h = 20,
                       double opening = 0, double g = 0, double admittance = 10,
                       Node nodeIn = null, Node nodeOut = null, VVS next = null)
         {
@@ -406,25 +406,22 @@ namespace kylsim
         /// <param name="canvas">The canvas.</param>
         public override void Draw(Graphics canvas)
         {
-            const int height = 20;
-            const int width = 30;
-
             // Left wall / Right wall
-            canvas.DrawLine(ComponentPen, X,         Y, X,         Y + height);
-            canvas.DrawLine(ComponentPen, X + width, Y, X + width, Y + height);
+            canvas.DrawLine(ComponentPen, X,         Y, X,         Y + H);
+            canvas.DrawLine(ComponentPen, X + W, Y, X + W, Y + H);
 
             // Top / Bottom
-            canvas.DrawLine(ComponentPen, X, Y,          X + width, Y         );
-            canvas.DrawLine(ComponentPen, X, Y + height, X + width, Y + height);
+            canvas.DrawLine(ComponentPen, X, Y,          X + W, Y         );
+            canvas.DrawLine(ComponentPen, X, Y + H, X + W, Y + H);
 
             // Inside
-            canvas.DrawLine(ComponentPen, X + 5, Y, X + 5, Y + (height - 5));
-            canvas.DrawLine(ComponentPen, X + (width - 5), Y, X + (width - 5), Y + (height - 5));
-            canvas.DrawLine(ComponentPen, X + (width/2), Y + height, X + (width/2), Y + 5);
+            canvas.DrawLine(ComponentPen, X + 5, Y, X + 5, Y + (H - 5));
+            canvas.DrawLine(ComponentPen, X + (W - 5), Y, X + (W - 5), Y + (H - 5));
+            canvas.DrawLine(ComponentPen, X + (W/2), Y + H, X + (W/2), Y + 5);
 
             // Draw lines
-            canvas.DrawLine(LinePen, X + (width / 2), Y + (height/2), NodeIn.X + ((NodeIn.W + NodeIn.H) / 4), NodeIn.Y);
-            canvas.DrawLine(LinePen, X + (width / 2), Y + (height /2), NodeOut.X + ((NodeOut.W + NodeOut.H) / 4), NodeOut.Y);
+            canvas.DrawLine(LinePen, X + (W / 2), Y + (H/2), NodeIn.X + ((NodeIn.W + NodeIn.H) / 4), NodeIn.Y);
+            canvas.DrawLine(LinePen, X + (W / 2), Y + (H /2), NodeOut.X + ((NodeOut.W + NodeOut.H) / 4), NodeOut.Y);
 
             // Draw text
             canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y - 15);
