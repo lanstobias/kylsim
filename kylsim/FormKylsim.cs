@@ -60,6 +60,11 @@ namespace kylsim
 
         }
 
+        /// <summary>
+        /// Handles the Opening event of the contextMenuStrip1 control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
         }
