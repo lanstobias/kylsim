@@ -168,7 +168,7 @@ namespace kylsim
         /// <param name="nodeOut">The node out.</param>
         /// <param name="position">The position.</param>
         /// <param name="admittance">The admittance.</param>
-        public Valve(string name = "", float x = 0, float y = 0, float w = 0, float h = 0,
+        public Valve(string name = "", float x = 0, float y = 0, float w = 15, float h = 10,
                      double position = 0, double admittance = 10, Node nodeIn = null, Node nodeOut = null, VVS next = null)
         {
             Name = name;
@@ -192,16 +192,15 @@ namespace kylsim
         /// <param name="pen">The pen.</param>
         public override void Draw(Graphics canvas)
         {
-            const int Ygrad = 10;
-            const int Xgrad = 15;
+            
        
             // Draw valve graphics
-            canvas.DrawLine(ComponentPen, X, Y, X+Xgrad, Y+ Ygrad);
-            canvas.DrawLine(ComponentPen, X, Y, X+Xgrad, Y - Ygrad);
-            canvas.DrawLine(ComponentPen, X+Xgrad, Y+Ygrad, X + Xgrad, Y - Ygrad);
-            canvas.DrawLine(ComponentPen, X,Y, X-Xgrad, Y - Ygrad);
-            canvas.DrawLine(ComponentPen, X, Y, X-Xgrad, Y + Ygrad);
-            canvas.DrawLine(ComponentPen, X-Xgrad,  Y-Ygrad, X - Xgrad, Y + Ygrad);
+            canvas.DrawLine(ComponentPen, X, Y, X+W, Y+ H);
+            canvas.DrawLine(ComponentPen, X, Y, X+W, Y - H);
+            canvas.DrawLine(ComponentPen, X+W, Y+H, X + W, Y - H);
+            canvas.DrawLine(ComponentPen, X,Y, X-W, Y - H);
+            canvas.DrawLine(ComponentPen, X, Y, X-W, Y + H);
+            canvas.DrawLine(ComponentPen, X-W,  Y-H, X - W, Y + H);
 
             // Draw lines
             canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H)/4, NodeIn.Y);
