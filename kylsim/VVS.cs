@@ -246,6 +246,7 @@ namespace kylsim
             NodeIn.AddSumFlow(-Flow);
             NodeOut.AddSumFlow(Flow);
         }
+
         /// <summary>
         /// Displays the specified canvas.
         /// </summary>
@@ -274,22 +275,39 @@ namespace kylsim
                 menu.Show(ctrl, new Point(clickX, clickY));
             }
         }
+
+        /// <summary>
+        /// Handles the open event of the menu_select control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_open(object sender, EventArgs e)
         {
             Open = true;
         }
+
+        /// <summary>
+        /// Handles the close event of the menu_select control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_close(object sender, EventArgs e)
         {
             Open = false;
         }
 
-
-
+        /// <summary>
+        /// Clicks the inside component.
+        /// </summary>
+        /// <param name="clickX">The click x.</param>
+        /// <param name="clickY">The click y.</param>
+        /// <returns></returns>
         public override bool clickInsideComponent(int clickX, int clickY)
         {
             return ((clickX >= X - W && clickX <= X + W) && (clickY >= Y - H && clickY <= Y + H));
         }
     }
+
     /// <summary>
     /// Pump
     /// </summary>
