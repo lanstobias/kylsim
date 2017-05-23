@@ -155,6 +155,7 @@ namespace kylsim
     {
         private double Position { get; set; }
         private double Admittance { get; set; }
+        private bool Open { get; set; }
         private double Flow { get; set; }
         public Node NodeIn { get; set; }
         public Node NodeOut { get; set; }
@@ -185,6 +186,7 @@ namespace kylsim
             Position   = position;
             Admittance = admittance;
             Next = next;
+            Open = true;
         }
 
         /// <summary>
@@ -221,6 +223,14 @@ namespace kylsim
         /// </summary>
         public override void Dynamics()
         {
+            //Check if valve is closed
+            if (!Open && Math.Round(Position, 1) > 0)
+                Position -= 0.1;
+
+            //Check if valve is open
+            if (Open && Math.Round(Position, 1) < 1)
+                Position += 0.1;
+
             // Calculate flow difference
             double PressureDifference;
             if (NodeIn.Pressure >= NodeOut.Pressure)
@@ -236,7 +246,6 @@ namespace kylsim
             NodeIn.AddSumFlow(-Flow);
             NodeOut.AddSumFlow(Flow);
         }
-
         /// <summary>
         /// Displays the specified canvas.
         /// </summary>
@@ -260,11 +269,21 @@ namespace kylsim
             if (clickInsideComponent(clickX, clickY))
             {
                 ContextMenu menu = new ContextMenu();
-                menu.MenuItems.Add("Öppna");
-                menu.MenuItems.Add("Stäng");
+                menu.MenuItems.Add("Öppna", new EventHandler(menu_select_open));
+                menu.MenuItems.Add("Stäng", new EventHandler(menu_select_close));
                 menu.Show(ctrl, new Point(clickX, clickY));
             }
         }
+        private void menu_select_open(object sender, EventArgs e)
+        {
+            Open = true;
+        }
+        private void menu_select_close(object sender, EventArgs e)
+        {
+            Open = false;
+        }
+
+
 
         public override bool clickInsideComponent(int clickX, int clickY)
         {
