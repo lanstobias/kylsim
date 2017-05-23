@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace kylsim
 {
@@ -104,6 +105,19 @@ namespace kylsim
             while (next != null)
             {
                 next.Dynamics();
+                next = next.Next;
+            }
+        }
+
+        /// <summary>
+        /// Displays the menu.
+        /// </summary>
+        public void DisplayMenu(MouseEventArgs e)
+        {
+            var next = RootComponents;
+            while (next != null)
+            {
+                next.DisplayMenu(e.X, e.Y);
                 next = next.Next;
             }
         }

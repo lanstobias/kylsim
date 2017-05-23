@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace kylsim
 {
@@ -51,6 +52,7 @@ namespace kylsim
         public virtual void Draw(Graphics canvas) {}
         public virtual void Display(Graphics canvas) { }
         public virtual void Dynamics() { }
+        public virtual void DisplayMenu(int clickX, int clickY) { }
     }
 
     /// <summary>
@@ -242,8 +244,24 @@ namespace kylsim
         public override void Display(Graphics canvas)
         {
             const string twoDecimals = "F1";
-            canvas.DrawString(Position.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 15);
-            canvas.DrawString(Flow.ToString(twoDecimals), Font, Brush, (float)X + 45, (float)Y + 30);
+            canvas.DrawString(Position.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 15);
+            canvas.DrawString(Flow.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 30);
+        }
+
+        /// <summary>
+        /// Displays the menu.
+        /// </summary>
+        /// <param name="menu">The menu.</param>
+        public override void DisplayMenu(int clickX, int clickY)
+        {
+            // Check if mouse click is inside the component box
+            //if ((clickX >= X && clickX <= W) && (clickY >= Y && clickY <= H))
+            //{
+                MessageBox.Show("Click");
+                ContextMenu menu = new ContextMenu();
+                menu.MenuItems.Add("Öppna");
+                menu.MenuItems.Add("Stäng");
+            //}
         }
     }
 

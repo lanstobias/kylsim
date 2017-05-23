@@ -48,19 +48,19 @@
             this.öppnaToolStripMenuItem,
             this.stängaToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(111, 48);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // öppnaToolStripMenuItem
             // 
             this.öppnaToolStripMenuItem.Name = "öppnaToolStripMenuItem";
-            this.öppnaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.öppnaToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.öppnaToolStripMenuItem.Text = "Öppna";
             // 
             // stängaToolStripMenuItem
             // 
             this.stängaToolStripMenuItem.Name = "stängaToolStripMenuItem";
-            this.stängaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stängaToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.stängaToolStripMenuItem.Text = "Stänga";
             // 
             // FormKylsim
@@ -72,6 +72,7 @@
             this.Text = "Kylsystem av Bobo Lillqvist och Tobias Lans";
             this.Load += new System.EventHandler(this.FormKylsim_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormKylsim_Paint);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormKylsim_MouseDown);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 

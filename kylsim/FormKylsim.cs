@@ -62,7 +62,11 @@ namespace kylsim
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
-            
+        }
+
+        private void FormKylsim_MouseDown(object sender, MouseEventArgs e)
+        {
+            kylsim.DisplayMenu(e);
         }
     }
 }
