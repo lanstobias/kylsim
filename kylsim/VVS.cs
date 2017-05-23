@@ -422,11 +422,11 @@ namespace kylsim
         public override void Draw(Graphics canvas)
         {
             // Left wall / Right wall
-            canvas.DrawLine(ComponentPen, X,         Y, X,         Y + H);
+            canvas.DrawLine(ComponentPen, X,     Y, X,     Y + H);
             canvas.DrawLine(ComponentPen, X + W, Y, X + W, Y + H);
 
             // Top / Bottom
-            canvas.DrawLine(ComponentPen, X, Y,          X + W, Y         );
+            canvas.DrawLine(ComponentPen, X, Y,     X + W, Y    );
             canvas.DrawLine(ComponentPen, X, Y + H, X + W, Y + H);
 
             // Inside
