@@ -31,7 +31,7 @@ namespace kylsim
             Node node3 = new Node("N3", COL5, ROW2, 10, 10, 1, true, 0, node2);
             Node node4 = new Node("N4", COL1, ROW3, 10, 10, 1, false, 0, node3);
             Node node5 = new Node("N5", COL2, ROW3, 10, 10, 1, false, 0, node4);
-            Node node6 = new Node("N6", COL3, ROW3, 10, 10, 1, false, 0, node5);
+            Node node6 = new Node("N6", COL2, ROW4, 10, 10, 1, false, 0, node5);
             Node node7 = new Node("N7", COL4, ROW4, 10, 10, 1, false, 0, node6);
             Node node8 = new Node("N8", COL5, ROW4, 10, 10, 1, false, 0, node7);
             RootNodes = node8;
@@ -48,8 +48,11 @@ namespace kylsim
             const int PUSH_SIDE = 5;
             HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL5 + PUSH_SIDE, ROW3, 10, 20, 10, node3, node8, filter1);
 
+            //Create Pump
+            Pump pump1 = new Pump("P1", COL3+PUSH_SIDE, ROW4, 20, 10, 10, node6, node7, heatExchanger1);
+
             // Change to last component in the chain
-            RootComponents = heatExchanger1;
+            RootComponents = pump1;
         }
 
         /// <summary>

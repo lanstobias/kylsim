@@ -314,7 +314,162 @@ namespace kylsim
     /// <seealso cref="kylsim.VVS" />
     public class Pump : VVS
     {
-        
+        private double Position { get; set; }
+        private double Admittance { get; set; }
+        private bool Open { get; set; }
+        private double Flow { get; set; }
+        public Node NodeIn { get; set; }
+        public Node NodeOut { get; set; }
+        public float R { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Pump"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="w">The w.</param>
+        /// <param name="h">The h.</param>
+        /// <param name="next">The next.</param>
+        /// <param name="nodeIn">The node in.</param>
+        /// <param name="nodeOut">The node out.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="admittance">The admittance.</param>
+        public Pump(string name = "", float x = 0, float y = 0, float r=40,
+                     double position = 0, double admittance = 10, Node nodeIn = null, Node nodeOut = null, VVS next = null)
+        {
+            Name = name;
+            X = x;
+            Y = y;
+            R = r;
+            W = R * 2;
+            H = R * 2;
+            NodeIn = nodeIn;
+            NodeOut = nodeOut;
+            Position = position;
+            Admittance = admittance;
+            Next = next;
+            Open = true;
+        }
+
+        /// <summary>
+        /// Draws the specified canvas.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        /// <param name="brush">The brush.</param>
+        /// <param name="font">The font.</param>
+        /// <param name="pen">The pen.</param>
+        public override void Draw(Graphics canvas)
+        {
+
+
+            // Draw valve graphics
+            float push_side1 = (R / 4);
+            float push_side2 = (R / 2) + (R / R);
+            float push_side3 = push_side1 + (R / R);
+
+            canvas.DrawEllipse(ComponentPen, X, Y - (R), W, H);
+            canvas.DrawLine(ComponentPen, X+R*2- push_side1, Y, X+R*2-push_side2, Y + push_side3);
+            canvas.DrawLine(ComponentPen, X+R*2- push_side1, Y, X+R*2-push_side2, Y - push_side3);
+           
+
+            // Draw lines
+            canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, NodeIn.Y);
+            canvas.DrawLine(LinePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H) / 4, NodeOut.Y);
+
+            // Draw text
+            canvas.DrawString(Name, Font, Brush, (float)X + 20, (float)Y + -35);
+            canvas.DrawString("speed : ", Font, Brush, (float)X + 10, (float)Y + 20);
+            canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 35);
+        }
+        /// <summary>
+        /// Dynamicses this instance.
+        /// </summary>
+        public override void Dynamics()
+        {
+            //Check if valve is closed
+            if (!Open && Math.Round(Position, 1) > 0)
+                Position -= 0.1;
+
+            //Check if valve is open
+            if (Open && Math.Round(Position, 1) < 1)
+                Position += 0.1;
+
+            // Calculate flow difference
+            double PressureDifference;
+            if (NodeIn.Pressure >= NodeOut.Pressure)
+            {
+                PressureDifference = (NodeIn.Pressure - NodeOut.Pressure);
+                Flow = Admittance * Position * (System.Math.Sqrt(PressureDifference));
+            }
+            else
+            {
+                PressureDifference = (NodeOut.Pressure - NodeIn.Pressure);
+                Flow = (-Admittance) * Position * (System.Math.Sqrt(PressureDifference));
+            }
+            NodeIn.AddSumFlow(-Flow);
+            NodeOut.AddSumFlow(Flow);
+        }
+
+        /// <summary>
+        /// Displays the specified canvas.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        /// <param name="brush">The brush.</param>
+        /// <param name="font">The font.</param>
+        public override void Display(Graphics canvas)
+        {
+            const string twoDecimals = "F1";
+            canvas.DrawString(Position.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 20);
+            canvas.DrawString(Flow.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 35);
+        }
+
+        /// <summary>
+        /// Displays the menu.
+        /// </summary>
+        /// <param name="menu">The menu.</param>
+        public override void DisplayMenu(int clickX, int clickY, Control ctrl)
+        {
+            // Check if mouse click is inside the component box
+            if (clickInsideComponent(clickX, clickY))
+            {
+                ContextMenu menu = new ContextMenu();
+                menu.MenuItems.Add("Öppna", new EventHandler(menu_select_open));
+                menu.MenuItems.Add("Stäng", new EventHandler(menu_select_close));
+                menu.Show(ctrl, new Point(clickX, clickY));
+            }
+        }
+
+        /// <summary>
+        /// Handles the open event of the menu_select control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void menu_select_open(object sender, EventArgs e)
+        {
+            Open = true;
+        }
+
+        /// <summary>
+        /// Handles the close event of the menu_select control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void menu_select_close(object sender, EventArgs e)
+        {
+            Open = false;
+        }
+
+        /// <summary>
+        /// Clicks the inside component.
+        /// </summary>
+        /// <param name="clickX">The click x.</param>
+        /// <param name="clickY">The click y.</param>
+        /// <returns></returns>
+        public override bool clickInsideComponent(int clickX, int clickY)
+        {
+            return ((clickX >= X - W && clickX <= X + W) && (clickY >= Y - H && clickY <= Y + H));
+        }
     }
 
     /// <summary>
