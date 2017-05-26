@@ -479,6 +479,7 @@ namespace kylsim
         /// <returns></returns>
         public override bool clickInsideComponent(int clickX, int clickY)
         {
+            // @FIXME Click box är åt helvete
             return ((clickX >= X - W && clickX <= X + W) && (clickY >= Y - H && clickY <= Y + H));
         }
     }
