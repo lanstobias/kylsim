@@ -103,7 +103,6 @@ namespace kylsim
             var next = RootNodes;
             while (next != null)
             {
-               
                 next.Dynamics();
                 next = next.Next;
             }
