@@ -388,7 +388,7 @@ namespace kylsim
             if (!Open && Math.Round(Speed, 1) > 0)
                 Speed -= 0.1;
 
-            //Check if valve is open
+            //Check if Pump is open
             if (Open && Math.Round(Speed, 1) < 1)
                 Speed += 0.1;
 
