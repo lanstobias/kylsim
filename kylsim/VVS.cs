@@ -198,8 +198,6 @@ namespace kylsim
         /// <param name="pen">The pen.</param>
         public override void Draw(Graphics canvas)
         {
-            
-       
             // Draw valve graphics
             canvas.DrawLine(ComponentPen, X, Y, X+W, Y+ H);
             canvas.DrawLine(ComponentPen, X, Y, X+W, Y - H);
@@ -361,8 +359,6 @@ namespace kylsim
         /// <param name="pen">The pen.</param>
         public override void Draw(Graphics canvas)
         {
-
-
             // Draw valve graphics
             float push_side1 = (R / 4);
             float push_side2 = (R / 2) + (R / R);
@@ -371,7 +367,6 @@ namespace kylsim
             canvas.DrawEllipse(ComponentPen, X, Y - (R), W, H);
             canvas.DrawLine(ComponentPen, X+R*2- push_side1, Y, X+R*2-push_side2, Y + push_side3);
             canvas.DrawLine(ComponentPen, X+R*2- push_side1, Y, X+R*2-push_side2, Y - push_side3);
-           
 
             // Draw lines
             canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, NodeIn.Y);
@@ -382,6 +377,7 @@ namespace kylsim
             canvas.DrawString("speed : ", Font, Brush, (float)X + 10, (float)Y + 20);
             canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 35);
         }
+
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>

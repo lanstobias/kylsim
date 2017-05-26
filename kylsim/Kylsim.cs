@@ -36,19 +36,19 @@ namespace kylsim
             Node node8 = new Node("N8", COL5, ROW4, 10, 10, 1, false, 0, node7);
             RootNodes = node8;
 
-            //Create valves
+            // Create valves
             Valve valve1 = new Valve("V1", COL2, ROW2, 15, 10, 1, 10, node1, node2, null);
             Valve valve2 = new Valve("V2", COL4, ROW2, 15, 10, 1, 10, node2, node3, valve1);
 
-            //Create filters
+            // Create filters
             const int PUSH_UP = 10;
             Filter filter1 = new Filter("F1", COL4, ROW2 - PUSH_UP, 30, 20, 1, 0.0001, 10, node2, node3, valve1);
 
-            //Create HeatExchangers
+            // Create HeatExchangers
             const int PUSH_SIDE = 5;
             HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL5 + PUSH_SIDE, ROW3, 10, 20, 10, node3, node8, filter1);
 
-            //Create Pump
+            // Create Pump
             Pump pump1 = new Pump("P1", COL3+PUSH_SIDE, ROW4, 20, 10, 10, node6, node7, heatExchanger1);
 
             // Change to last component in the chain
