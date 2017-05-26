@@ -49,7 +49,7 @@ namespace kylsim
             HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL5 + PUSH_SIDE, ROW3, 10, 20, 10, node3, node8, filter1);
 
             // Create Pump
-            Pump pump1 = new Pump("P1", COL3+PUSH_SIDE, ROW4, 20, 10, 10, node6, node7, heatExchanger1);
+            Pump pump1 = new Pump("P1", COL3+PUSH_SIDE, ROW4, 20, 1, 1, node6, node7, heatExchanger1);
 
             // Change to last component in the chain
             RootComponents = pump1;
