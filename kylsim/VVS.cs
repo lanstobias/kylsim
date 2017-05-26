@@ -312,8 +312,8 @@ namespace kylsim
     /// <seealso cref="kylsim.VVS" />
     public class Pump : VVS
     {
-        private double Position { get; set; }
-        private double Admittance { get; set; }
+        private double Speed { get; set; }
+        private double K { get; set; }
         private bool Open { get; set; }
         private double Flow { get; set; }
         public Node NodeIn { get; set; }
@@ -334,7 +334,7 @@ namespace kylsim
         /// <param name="position">The position.</param>
         /// <param name="admittance">The admittance.</param>
         public Pump(string name = "", float x = 0, float y = 0, float r=40,
-                     double position = 0, double admittance = 10, Node nodeIn = null, Node nodeOut = null, VVS next = null)
+                     double speed = 0, double k = 1, Node nodeIn = null, Node nodeOut = null, VVS next = null)
         {
             Name = name;
             X = x;
@@ -344,8 +344,8 @@ namespace kylsim
             H = R * 2;
             NodeIn = nodeIn;
             NodeOut = nodeOut;
-            Position = position;
-            Admittance = admittance;
+            Speed = speed;
+            K = k;
             Next = next;
             Open = true;
         }
@@ -359,7 +359,7 @@ namespace kylsim
         /// <param name="pen">The pen.</param>
         public override void Draw(Graphics canvas)
         {
-            // Draw valve graphics
+            // Draw Pump graphics
             float push_side1 = (R / 4);
             float push_side2 = (R / 2) + (R / R);
             float push_side3 = push_side1 + (R / R);
@@ -383,25 +383,26 @@ namespace kylsim
         /// </summary>
         public override void Dynamics()
         {
-            //Check if valve is closed
-            if (!Open && Math.Round(Position, 1) > 0)
-                Position -= 0.1;
+            //Check if Pump is closed
+            const double a = 5, b = 10;
+            if (!Open && Math.Round(Speed, 1) > 0)
+                Speed -= 0.1;
 
             //Check if valve is open
-            if (Open && Math.Round(Position, 1) < 1)
-                Position += 0.1;
+            if (Open && Math.Round(Speed, 1) < 1)
+                Speed += 0.1;
 
             // Calculate flow difference
             double PressureDifference;
             if (NodeIn.Pressure >= NodeOut.Pressure)
             {
                 PressureDifference = (NodeIn.Pressure - NodeOut.Pressure);
-                Flow = Admittance * Position * (System.Math.Sqrt(PressureDifference));
+                Flow = K * Speed * a * (b + (System.Math.Sqrt(PressureDifference)));
             }
             else
             {
                 PressureDifference = (NodeOut.Pressure - NodeIn.Pressure);
-                Flow = (-Admittance) * Position * (System.Math.Sqrt(PressureDifference));
+                Flow = K * Speed * a * (b - (System.Math.Sqrt(PressureDifference)));
             }
             NodeIn.AddSumFlow(-Flow);
             NodeOut.AddSumFlow(Flow);
@@ -416,7 +417,7 @@ namespace kylsim
         public override void Display(Graphics canvas)
         {
             const string twoDecimals = "F1";
-            canvas.DrawString(Position.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 20);
+            canvas.DrawString(Speed.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 20);
             canvas.DrawString(Flow.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 35);
         }
 
@@ -430,8 +431,8 @@ namespace kylsim
             if (clickInsideComponent(clickX, clickY))
             {
                 ContextMenu menu = new ContextMenu();
-                menu.MenuItems.Add("Öppna", new EventHandler(menu_select_open));
-                menu.MenuItems.Add("Stäng", new EventHandler(menu_select_close));
+                menu.MenuItems.Add("Starta", new EventHandler(menu_select_open));
+                menu.MenuItems.Add("Stoppa", new EventHandler(menu_select_close));
                 menu.Show(ctrl, new Point(clickX, clickY));
             }
         }
