@@ -360,21 +360,21 @@ namespace kylsim
         public override void Draw(Graphics canvas)
         {
             // Draw Pump graphics
-            float push_side1 = (R / 4);
-            float push_side2 = (R / 2) + (R / R);
-            float push_side3 = push_side1 + (R / R);
+            float PUSH_SIDE1 = (R / 4);
+            float PUSH_SIDE2 = (R / 2) + (R / R);
+            float PUSH_SIDE3 = PUSH_SIDE1 + (R / R);
 
             canvas.DrawEllipse(ComponentPen, X, Y - (R), W, H);
-            canvas.DrawLine(ComponentPen, X+R*2- push_side1, Y, X+R*2-push_side2, Y + push_side3);
-            canvas.DrawLine(ComponentPen, X+R*2- push_side1, Y, X+R*2-push_side2, Y - push_side3);
+            canvas.DrawLine(ComponentPen, X + R * 2 - PUSH_SIDE1, Y, X + R * 2 - PUSH_SIDE2, Y + PUSH_SIDE3);
+            canvas.DrawLine(ComponentPen, X + R * 2 - PUSH_SIDE1, Y, X + R * 2 - PUSH_SIDE2, Y - PUSH_SIDE3);
 
             // Draw lines
             canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, NodeIn.Y);
             canvas.DrawLine(LinePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H) / 4, NodeOut.Y);
 
             // Draw text
-            canvas.DrawString(Name, Font, Brush, (float)X + 20, (float)Y + -35);
-            canvas.DrawString("speed : ", Font, Brush, (float)X + 10, (float)Y + 20);
+            canvas.DrawString(Name, Font, Brush, (float)X + 20, (float)Y + - 35);
+            canvas.DrawString("Speed : ", Font, Brush, (float)X + 10, (float)Y + 20);
             canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 35);
         }
 
@@ -479,8 +479,6 @@ namespace kylsim
         /// <returns></returns>
         public override bool clickInsideComponent(int clickX, int clickY)
         {
-            // @FIXME Click box är åt helvete
-            
             return ((clickX >= X && clickX <= X + W) && (clickY >= Y - H && clickY <= Y + H));
         }
     }
