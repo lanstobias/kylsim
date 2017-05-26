@@ -407,14 +407,18 @@ namespace kylsim
             NodeIn.AddSumFlow(-Flow);
             NodeOut.AddSumFlow(Flow);
 
-            //Begränsa flöde
-            limitflow();
+            limitflow(1.0);
         }
-        private void limitflow()
+
+        /// <summary>
+        /// Limitflows the specified limit.
+        /// </summary>
+        /// <param name="limit">The limit.</param>
+        private void limitflow(double limit)
         {
             K = NodeIn.Pressure;
-            if (K > 1.0)
-                K = 1.0;
+            if (K > limit)
+                K = limit;
         }
         /// <summary>
         /// Displays the specified canvas.
