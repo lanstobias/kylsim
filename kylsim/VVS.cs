@@ -207,8 +207,20 @@ namespace kylsim
             canvas.DrawLine(ComponentPen, X-W,  Y-H, X - W, Y + H);
 
             // Draw lines
-            canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H)/4, NodeIn.Y);
-            canvas.DrawLine(LinePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H)/4, NodeOut.Y);
+            if (X == NodeIn.X)
+                canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, NodeIn.Y);
+            else
+            {
+                canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, Y);
+                canvas.DrawLine(LinePen, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, Y, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, NodeIn.Y);
+            }
+            if (X == NodeOut.X)
+                canvas.DrawLine(LinePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H) / 4, NodeOut.Y);
+            else
+            {
+                canvas.DrawLine(LinePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H) / 4, Y);
+                canvas.DrawLine(LinePen, NodeOut.X + (NodeOut.W + NodeOut.H) / 4, Y, NodeOut.X + (NodeOut.W + NodeOut.H) / 4, NodeOut.Y);
+            }
 
             // Draw text
             canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -25);
