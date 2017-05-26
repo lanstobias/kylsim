@@ -38,7 +38,7 @@ namespace kylsim
 
             // Create valves
             Valve valve1 = new Valve("V1", COL2, ROW2, 15, 10, 1, 10, node1, node2, null);
-            Valve valve2 = new Valve("V2", COL4, ROW2, 15, 10, 1, 10, node2, node3, valve1);
+            Valve valve2 = new Valve("V2", COL5-40, ROW4, 15, 10, 1, 10, node7, node8, valve1);
 
             // Create filters
             const int PUSH_UP = 10;
