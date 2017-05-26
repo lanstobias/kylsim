@@ -383,12 +383,13 @@ namespace kylsim
         /// </summary>
         public override void Dynamics()
         {
-            //Check if Pump is closed
             const double a = 5, b = 10;
+
+            // Check if Pump is closed
             if (!Open && Math.Round(Speed, 1) > 0)
                 Speed -= 0.1;
 
-            //Check if Pump is open
+            // Check if Pump is open
             if (Open && Math.Round(Speed, 1) < 1)
                 Speed += 0.1;
 
@@ -420,6 +421,7 @@ namespace kylsim
             if (K > limit)
                 K = limit;
         }
+
         /// <summary>
         /// Displays the specified canvas.
         /// </summary>
