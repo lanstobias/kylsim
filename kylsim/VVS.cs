@@ -45,6 +45,7 @@ namespace kylsim
             Y = y;
             W = w;
             H = h;
+            LogFileName = "kylsim.log";
         }
 
         /// <summary>
