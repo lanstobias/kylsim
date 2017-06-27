@@ -68,6 +68,9 @@ namespace kylsim
         public double Pressure { get; private set; }
         private bool Adjustable { get; set; }
         public double SumFlow { get; private set; }
+        public double SumFlow_old { get; private set; }
+        public double PropConst { get; private set; }
+        public double InError { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Node"/> class.
@@ -96,6 +99,8 @@ namespace kylsim
             Adjustable = adjustable;
             SumFlow    = sumFlow;
             Next = next;
+            PropConst = 0.05;
+            InError = 0.001;
         }
 
         /// <summary>
@@ -128,14 +133,35 @@ namespace kylsim
         /// </summary>
         public override void Dynamics()
         {
+            //if (Adjustable)
+            //{
+            //    if (SumFlow > 0)
+            //        Pressure += 0.1;
+            //    else if (SumFlow < 0)
+            //        Pressure -= 0.1;
+            //    SumFlow = 0;
+            //}
+
             if (Adjustable)
             {
-                if (SumFlow > 0)
-                    Pressure += 0.1;
-                else if (SumFlow < 0)
-                    Pressure -= 0.1;
-                SumFlow = 0;
+                if (Math.Abs(SumFlow) > 0.1)
+                {
+                    if (SumFlow * SumFlow_old < 0 && Math.Abs(SumFlow) > Math.Abs(SumFlow_old))
+                        PropConst *= 0.8;
+                    else
+                        PropConst *= 1.05;
+                    if (PropConst * Math.Abs(SumFlow) > 0.8 * Pressure)
+                        PropConst = 0.8 * Pressure / Math.Abs(SumFlow);
+                    if (PropConst < 0.0001)
+                        PropConst = 0.0001;
+                }
+                InError += PropConst * SumFlow;
+                Pressure = SumFlow * PropConst * 0.25 + InError;
+                if (Pressure < 0.001)
+                    Pressure = 0.001;
             }
+            SumFlow_old = SumFlow;
+            SumFlow = 0;
         }
 
         /// <summary>
