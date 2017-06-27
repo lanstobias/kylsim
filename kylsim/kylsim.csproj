@@ -54,6 +54,7 @@
       <DependentUpon>FormKylsim.cs</DependentUpon>
     </Compile>
     <Compile Include="Kylsim.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VVS.cs" />
