@@ -295,7 +295,11 @@ namespace kylsim
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_open(object sender, EventArgs e)
         {
-            Open = true;
+            if (!Open)
+            {
+                Open = true;
+                Log.Write(LogFileName, "Open valve: " + Name);
+            }
         }
 
         /// <summary>
@@ -305,7 +309,11 @@ namespace kylsim
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_close(object sender, EventArgs e)
         {
-            Open = false;
+            if (Open)
+            {
+                Open = false;
+                Log.Write(LogFileName, "Close valve: " + Name);
+            }
         }
 
         /// <summary>
@@ -472,7 +480,11 @@ namespace kylsim
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_open(object sender, EventArgs e)
         {
-            Open = true;
+            if (!Open)
+            {
+                Open = true;
+                Log.Write(LogFileName, "Open pump: " + Name);
+            }
         }
 
         /// <summary>
@@ -482,7 +494,11 @@ namespace kylsim
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_close(object sender, EventArgs e)
         {
-            Open = false;
+            if (Open)
+            {
+                Open = false;
+                Log.Write(LogFileName, "Close pump: " + Name);
+            }
         }
 
         /// <summary>
