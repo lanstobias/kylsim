@@ -133,15 +133,6 @@ namespace kylsim
         /// </summary>
         public override void Dynamics()
         {
-            //if (Adjustable)
-            //{
-            //    if (SumFlow > 0)
-            //        Pressure += 0.1;
-            //    else if (SumFlow < 0)
-            //        Pressure -= 0.1;
-            //    SumFlow = 0;
-            //}
-
             if (Adjustable)
             {
                 if (Math.Abs(SumFlow) > 0.1)
