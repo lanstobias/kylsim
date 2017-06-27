@@ -10,6 +10,7 @@ namespace kylsim
     public class VVS
     {
         public string Name { get; protected set; }
+        public string LogFileName { get; set; }
         public float X { get; protected set; }
         public float Y { get; protected set; }
         public float W { get; protected set; }
