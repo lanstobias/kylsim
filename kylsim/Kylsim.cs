@@ -8,6 +8,7 @@ namespace kylsim
     {
         private VVS RootComponents = null;
         private VVS RootNodes = null;
+        public Log LogFile = new Log();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Kylsim"/> class.
