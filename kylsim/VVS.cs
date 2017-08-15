@@ -107,7 +107,7 @@ namespace kylsim
         /// Draws the specified canvas.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        public override void Draw(Graphics canvas) 
+        public override void Draw(Graphics canvas)
         {
             // Draw ellipse
             canvas.DrawEllipse(ComponentPen, X, Y-((W+H)/4), W, H);
@@ -574,7 +574,7 @@ namespace kylsim
         /// <param name="canvas">The canvas.</param>
         public override void Draw(Graphics canvas)
         {
-            
+
             // Draw HeatExchanger graphics
             canvas.DrawLine(ComponentPen, X - W, Y - H, X - W, Y + H); //vänsterlinje
             canvas.DrawLine(ComponentPen, X - W, Y - H, X + W, Y - H); //övrelinje
@@ -585,7 +585,7 @@ namespace kylsim
 
             canvas.DrawLine(ComponentPen, X + W, Y + H, X + W, Y - H); //högerlinje
             canvas.DrawLine(ComponentPen, X + W, Y + H, X - W, Y + H); //nedrelinje
-            
+
             // Draw lines
             canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, NodeIn.Y);
             canvas.DrawLine(LinePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H) / 4, NodeOut.Y);
@@ -722,7 +722,7 @@ namespace kylsim
             NodeIn.AddSumFlow(-Flow);
             NodeOut.AddSumFlow(Flow);
 
-            // 
+            //
             Opening = Opening - G * Flow;
             if (Opening < 0.5)
             {
@@ -752,7 +752,7 @@ namespace kylsim
             else if (Full)
             {
                 if (RensaRed)
-                { 
+                {
                     canvas.DrawString(str, Font, RedBrush, (float)X + 10, (float)Y - 35);
                     RensaRed = false;
                 }
