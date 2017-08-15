@@ -256,12 +256,12 @@ namespace kylsim
         {
             //Check if valve is closed
             if (!Open && Math.Round(Position, 1) > 0)
-                Position -= 0.1;
+                Position -= (gt*dt)/2000;
 
             //Check if valve is open
             if (Open && Math.Round(Position, 1) < 1)
-                Position += 0.1;
-
+                Position += (gt*dt)/2000;
+          
             // Calculate flow difference
             double PressureDifference;
             if (NodeIn.Pressure >= NodeOut.Pressure)
