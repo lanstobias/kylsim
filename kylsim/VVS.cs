@@ -435,12 +435,18 @@ namespace kylsim
             const double a = 5, b = 10;
 
             // Check if Pump is closed
-            if (!Open && Math.Round(Speed, 1) > 0)
-                Speed -= 0.1;
+            if (!Open && Math.Round(Speed, 5) > 0)
+            {
+                Speed -= (gt * dt) / 2000;
+                if (Speed < 0) Speed = 0;
+            }
 
             // Check if Pump is open
-            if (Open && Math.Round(Speed, 1) < 1)
-                Speed += 0.1;
+            if (Open && Math.Round(Speed, 5) < 1)
+            {
+                Speed += (gt * dt) / 2000;
+                if (Speed > 1) Speed = 1;
+            }
 
             // Calculate flow difference
             double PressureDifference;
