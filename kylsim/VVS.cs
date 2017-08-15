@@ -255,12 +255,18 @@ namespace kylsim
         public override void Dynamics(int dt)
         {
             //Check if valve is closed
-            if (!Open && Math.Round(Position, 1) > 0)
-                Position -= (gt*dt)/2000;
+            if (!Open && Math.Round(Position, 5) > 0)
+            {
+                Position -= (gt * dt) / 2000;
+                if (Position < 0) Position = 0;
+            }
 
             //Check if valve is open
-            if (Open && Math.Round(Position, 1) < 1)
-                Position += (gt*dt)/2000;
+            if (Open && Math.Round(Position, 5) < 1)
+            { 
+                Position += (gt * dt) / 2000;
+                if (Position > 1) Position = 1;
+            }
           
             // Calculate flow difference
             double PressureDifference;
