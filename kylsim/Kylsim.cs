@@ -105,18 +105,18 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public void Dynamics()
+        public void Dynamics(int dt)
         {
             var next = RootNodes;
             while (next != null)
             {
-                next.Dynamics();
+                next.Dynamics(dt);
                 next = next.Next;
             }
             next = RootComponents;
             while (next != null)
             {
-                next.Dynamics();
+                next.Dynamics(dt);
                 next = next.Next;
             }
         }

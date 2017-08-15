@@ -54,7 +54,7 @@ namespace kylsim
         /// <param name="canvas">The canvas.</param>
         public virtual void Draw(Graphics canvas) {}
         public virtual void Display(Graphics canvas) { }
-        public virtual void Dynamics() { }
+        public virtual void Dynamics(int dt) { }
         public virtual void DisplayMenu(int clickX, int clickY, Control ctrl) { }
         public virtual bool clickInsideComponent(int clickX, int clickY) { return false; }
     }
@@ -131,7 +131,7 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public override void Dynamics()
+        public override void Dynamics(int dt)
         {
             if (Adjustable)
             {
@@ -250,7 +250,7 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public override void Dynamics()
+        public override void Dynamics(int dt)
         {
             //Check if valve is closed
             if (!Open && Math.Round(Position, 1) > 0)
@@ -420,7 +420,7 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public override void Dynamics()
+        public override void Dynamics(int dt)
         {
             const double a = 5, b = 10;
 
@@ -598,7 +598,7 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public override void Dynamics()
+        public override void Dynamics(int dt)
         {
             // Calculate flow difference
             double PressureDifference;
@@ -705,7 +705,7 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public override void Dynamics()
+        public override void Dynamics(int dt)
         {
             // Calculate flow difference
             double PressureDifference;
