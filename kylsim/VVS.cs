@@ -780,9 +780,10 @@ namespace kylsim
         /// <param name="canvas">The canvas.</param>
         public override void Display(Graphics canvas)
         {
-            const string twoDecimals = "F1";
+            const string oneDecimal = "F1";
+            const string twoDecimals = "F2";
             canvas.DrawString(Opening.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 25);
-            canvas.DrawString(Flow.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 40);
+            canvas.DrawString(Flow.ToString(oneDecimal), FontBold, Brush, (float)X + 45, (float)Y + 40);
         }
 
         public void DrawRensa(Graphics canvas)
