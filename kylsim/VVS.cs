@@ -15,6 +15,7 @@ namespace kylsim
         public float Y { get; protected set; }
         public float W { get; protected set; }
         public float H { get; protected set; }
+        public double gt { get; set; }
 
         public VVS Next { get; set; }
 
@@ -178,7 +179,6 @@ namespace kylsim
         private double Flow { get; set; }
         public Node NodeIn { get; set; }
         public Node NodeOut { get; set; }
-        public double gt { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Valve"/> class.
@@ -366,7 +366,6 @@ namespace kylsim
         public Node NodeIn { get; set; }
         public Node NodeOut { get; set; }
         public float R { get; set; }
-        public double gt { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pump"/> class.
