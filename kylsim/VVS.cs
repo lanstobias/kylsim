@@ -194,7 +194,7 @@ namespace kylsim
         /// <param name="position">The position.</param>
         /// <param name="admittance">The admittance.</param>
         public Valve(string name = "", float x = 0, float y = 0, float w = 15, float h = 10,
-                     double position = 0, double admittance = 10, Node nodeIn = null, Node nodeOut = null, VVS next = null)
+                     double position = 0, double admittance = 10, bool open = true, Node nodeIn = null, Node nodeOut = null, VVS next = null)
         {
             Name = name;
             X = x;
@@ -206,7 +206,7 @@ namespace kylsim
             Position   = position;
             Admittance = admittance;
             Next = next;
-            Open = true;
+            Open = open;
             gt = 0.5;
         }
 
@@ -408,7 +408,7 @@ namespace kylsim
             Speed = speed;
             K = k;
             Next = next;
-            Open = true;
+            Open = false;
             gt = 0.5;
         }
 
