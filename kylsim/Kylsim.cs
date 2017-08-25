@@ -44,7 +44,7 @@ namespace kylsim
             Valve valve1 = new Valve("V1", COL2, ROW5, 15, 10, 1, 10, true, node1, node2, null);
             Valve valve2 = new Valve("V2", COL6, ROW2, 15, 10, 1, 10, true, node5, node4, valve1);
             Valve valve3 = new Valve("V3", COL2, ROW2, 15, 10, 1, 10, true, node7, node6, valve2);
-            Valve valve4 = new Valve("V4", COL5, ROW3, 15, 10, 1, 10, true, node6, node4, valve3);
+            Valve valve4 = new Valve("V4", COL5, ROW3, 15, 10, 0, 10, false, node6, node4, valve3);
             Valve valve5 = new Valve("V5", COL6, ROW1, 15, 10, 0, 10, false, node5, node8, valve4);
 
             // Create filters
