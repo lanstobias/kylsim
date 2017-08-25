@@ -53,7 +53,7 @@ namespace kylsim
 
             // Create HeatExchangers
             const int PUSH_SIDE = 5;
-            HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL7 + PUSH_SIDE, ROW4, 10, 20, 10, node4, node3, filter1);
+            HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL7 + PUSH_SIDE, ROW4, 10, 20, 10, node3, node4, filter1);
 
             // Create Pump
             Pump pump1 = new Pump("P1", COL5+40, ROW5, 20, 1, 1, node2, node3, heatExchanger1);
