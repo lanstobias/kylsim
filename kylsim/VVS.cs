@@ -767,7 +767,7 @@ namespace kylsim
 
             //
             if (Opening >= 0 && Opening <= 1)
-                Opening = Opening - G * Flow;
+                Opening = Opening - G * Math.Abs(Flow);
 
             if (Opening < 0.5)
             {
