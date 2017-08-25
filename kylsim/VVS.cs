@@ -247,6 +247,7 @@ namespace kylsim
             canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -25);
             canvas.DrawString("vpos : ", Font, Brush, (float)X + 10, (float)Y + 15);
             canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 30);
+            canvas.DrawString("gt : ", Font, Brush, (float)X + 10, (float)Y + 45);
         }
 
         /// <summary>
@@ -295,6 +296,7 @@ namespace kylsim
             const string twoDecimals = "F1";
             canvas.DrawString(Position.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 15);
             canvas.DrawString(Flow.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 30);
+            canvas.DrawString(gt.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 45);
         }
 
         /// <summary>
@@ -487,6 +489,7 @@ namespace kylsim
             const string twoDecimals = "F1";
             canvas.DrawString(Speed.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 20);
             canvas.DrawString(Flow.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 35);
+            canvas.DrawString(gt.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 50);
         }
 
         /// <summary>
@@ -501,6 +504,7 @@ namespace kylsim
                 ContextMenu menu = new ContextMenu();
                 menu.MenuItems.Add("Starta", new EventHandler(menu_select_open));
                 menu.MenuItems.Add("Stoppa", new EventHandler(menu_select_close));
+                menu.MenuItems.Add("Ändra gtidskonstant", new EventHandler(menu_select_gtid));
                 menu.Show(ctrl, new Point(clickX, clickY));
             }
         }
