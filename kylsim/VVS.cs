@@ -766,7 +766,9 @@ namespace kylsim
             NodeOut.AddSumFlow(Flow);
 
             //
-            Opening = Opening - G * Flow;
+            if (Opening >= 0 && Opening <= 1)
+                Opening = Opening - G * Flow;
+
             if (Opening < 0.5)
             {
                 Full = true;
