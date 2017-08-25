@@ -311,6 +311,7 @@ namespace kylsim
                 ContextMenu menu = new ContextMenu();
                 menu.MenuItems.Add("Öppna", new EventHandler(menu_select_open));
                 menu.MenuItems.Add("Stäng", new EventHandler(menu_select_close));
+                menu.MenuItems.Add("Ändra gtidskonstant", new EventHandler(menu_select_gtid));
                 menu.Show(ctrl, new Point(clickX, clickY));
             }
         }
@@ -341,6 +342,17 @@ namespace kylsim
                 Open = false;
                 Log.Write(LogFileName, "Close valve: " + Name);
             }
+        }
+
+        /// <summary>
+        /// Handles the select gt
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menu_select_gtid(object sender, EventArgs e)
+        {
+            FormSetGt formSetGt = new FormSetGt(this);
+            formSetGt.Show();
         }
 
         /// <summary>
@@ -426,6 +438,7 @@ namespace kylsim
             canvas.DrawString(Name, Font, Brush, (float)X + 20, (float)Y + - 35);
             canvas.DrawString("Speed : ", Font, Brush, (float)X + 10, (float)Y + 20);
             canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 35);
+            canvas.DrawString("gt : ", Font, Brush, (float)X + 10, (float)Y + 50);
         }
 
         /// <summary>
@@ -535,6 +548,17 @@ namespace kylsim
                 Open = false;
                 Log.Write(LogFileName, "Close pump: " + Name);
             }
+        }
+
+        /// <summary>
+        /// Handles the select gt
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menu_select_gtid(object sender, EventArgs e)
+        {
+            FormSetGt formSetGt = new FormSetGt(this);
+            formSetGt.Show();
         }
 
         /// <summary>
