@@ -49,7 +49,7 @@ namespace kylsim
 
             // Create filters
             const int PUSH_UP = 10;
-            Filter filter1 = new Filter("F1", COL4, ROW2 - PUSH_UP, 30, 20, 1, 0.0001, 10, node6, node5, valve5);
+            Filter filter1 = new Filter("F1", COL4, ROW2 - PUSH_UP, 30, 20, 1, 0.0001, 10, node6, node5, valve5, valve5);
 
             // Create HeatExchangers
             const int PUSH_SIDE = 5;

@@ -683,6 +683,7 @@ namespace kylsim
         public Node NodeIn { get; set; }
         public Node NodeOut { get; set; }
         private bool RensaRed = false;
+        private Valve Valves { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Filter"/> class.
@@ -699,7 +700,7 @@ namespace kylsim
         /// <param name="next">The next.</param>
         public Filter(string name = "", float x = 0, float y = 0, float w = 30, float h = 20,
                       double opening = 0, double g = 0, double admittance = 10,
-                      Node nodeIn = null, Node nodeOut = null, VVS next = null)
+                      Node nodeIn = null, Node nodeOut = null, VVS next = null, VVS first = null, Valve valves = null)
         {
             Name = name;
             X = x;
@@ -708,10 +709,23 @@ namespace kylsim
             H = h;
             Opening = opening;
             G = g;
-            NodeIn  = nodeIn;
+            NodeIn = nodeIn;
             NodeOut = nodeOut;
-            Next    = next;
+            Next = next;
             Admittance = admittance;
+            Valves = valves;
+        }
+
+        public Valve getValve(string name)
+        {
+            while (Valves.Next != null)
+            {
+                if (Valves.Name == name)
+                    return Valves;
+
+                Valves = (Valve)Valves.Next;
+            }
+            return null;
         }
 
         /// <summary>
