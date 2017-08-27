@@ -801,6 +801,7 @@ namespace kylsim
             fullCheck();
 
         }
+
         public void openingLimiter()
         {
             double openingTemp = Opening - G * Flow;
@@ -809,11 +810,13 @@ namespace kylsim
             else
                 Opening = openingTemp;
         }
+
         public void nodeFlowAdjust()
         {
             NodeIn.AddSumFlow(-Flow);
             NodeOut.AddSumFlow(Flow);
         }
+
         public void fullCheck()
         {
             if (Opening >= OpeningLimit && Full)
@@ -822,16 +825,19 @@ namespace kylsim
                 normalizeFlow();
             }
         }
+
         public void clearingCheck()
         {
             if (Opening <= OpeningLimitCleaning)
                 clearFilter();
         }
+
         public void fullWarningCheck()
         {
             if (Opening <= OpeningLimitWarning && !Full)
                 Full = true;
         }
+
         public void calculateFlowDifference()
         {
             double PressureDifference;
@@ -846,6 +852,7 @@ namespace kylsim
                 Flow = (-Admittance) * Opening * (System.Math.Sqrt(PressureDifference));
             }
         }
+
         public void fouling()
         {
             if (Opening >= 0 && Opening <= OpeningLimit)
@@ -853,12 +860,14 @@ namespace kylsim
                 openingLimiter();
             }
         }
+
         public void clearFilter()
         {
             getValve("V4").open();
             getValve("V5").open();
             getValve("V2").close();
         }
+
         public void normalizeFlow()
         {
             getValve("V4").close();
