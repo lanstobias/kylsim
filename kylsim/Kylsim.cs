@@ -42,14 +42,14 @@ namespace kylsim
 
             // Create valves
             Valve valve1 = new Valve("V1", COL2, ROW5, 15, 10, 1, 10, true, node1, node2, null);
-            Valve valve2 = new Valve("V2", COL6, ROW2, 15, 10, 1, 10, true, node5, node4, valve1);
-            Valve valve3 = new Valve("V3", COL2, ROW2, 15, 10, 1, 10, true, node7, node6, valve2);
-            Valve valve4 = new Valve("V4", COL5, ROW3, 15, 10, 0, 10, false, node6, node4, valve3);
+            Valve valve2 = new Valve("V2", COL6, ROW2, 15, 10, 1, 10, true, node4, node5, valve1);
+            Valve valve3 = new Valve("V3", COL2, ROW2, 15, 10, 1, 10, true, node6, node7, valve2);
+            Valve valve4 = new Valve("V4", COL5, ROW3, 15, 10, 0, 10, false, node4, node6, valve3);
             Valve valve5 = new Valve("V5", COL6, ROW1, 15, 10, 0, 10, false, node5, node8, valve4);
 
             // Create filters
             const int PUSH_UP = 10;
-            Filter filter1 = new Filter("F1", COL4, ROW2 - PUSH_UP, 30, 20, 1, 0.0001, 10, node6, node5, valve5, valve5);
+            Filter filter1 = new Filter("F1", COL4, ROW2 - PUSH_UP, 30, 20, 1, 0.0001, 10, node5, node6, valve5, valve5);
 
             // Create HeatExchangers
             const int PUSH_SIDE = 5;

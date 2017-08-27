@@ -323,11 +323,7 @@ namespace kylsim
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_open(object sender, EventArgs e)
         {
-            if (!Open)
-            {
-                Open = true;
-                Log.Write(LogFileName, "Open valve: " + Name);
-            }
+            open();
         }
 
         /// <summary>
@@ -337,11 +333,7 @@ namespace kylsim
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_close(object sender, EventArgs e)
         {
-            if (Open)
-            {
-                Open = false;
-                Log.Write(LogFileName, "Close valve: " + Name);
-            }
+            close();
         }
 
         /// <summary>
@@ -365,6 +357,29 @@ namespace kylsim
         {
             return ((clickX >= X - W && clickX <= X + W) && (clickY >= Y - H && clickY <= Y + H));
         }
+
+        public void open()
+        {
+            if (!Open)
+            {
+                Open = true;
+                Log.Write(LogFileName, "Open valve: " + Name);
+            }
+        }
+        public void close()
+        {
+            if (Open)
+            {
+                Open = false;
+                Log.Write(LogFileName, "Close valve: " + Name);
+            }
+        }
+
+        public bool getOpenState()
+        {
+            return Open;
+        }
+
     }
 
     /// <summary>
@@ -680,6 +695,9 @@ namespace kylsim
         private double Admittance { get; set; }
         private double G { get; set; }
         private bool Full = false;
+        private double OpeningLimitWarning { get; set; }
+        private double OpeningLimitCleaning { get; set; }
+        private double OpeningLimit { get; set; }
         public Node NodeIn { get; set; }
         public Node NodeOut { get; set; }
         private bool RensaRed = false;
@@ -700,7 +718,7 @@ namespace kylsim
         /// <param name="next">The next.</param>
         public Filter(string name = "", float x = 0, float y = 0, float w = 30, float h = 20,
                       double opening = 0, double g = 0, double admittance = 10,
-                      Node nodeIn = null, Node nodeOut = null, VVS next = null, VVS first = null, Valve valves = null)
+                      Node nodeIn = null, Node nodeOut = null, VVS next = null,  Valve valves = null)
         {
             Name = name;
             X = x;
@@ -714,20 +732,31 @@ namespace kylsim
             Next = next;
             Admittance = admittance;
             Valves = valves;
+            OpeningLimitWarning = 0.5;
+            OpeningLimitCleaning = 0.2;
+            OpeningLimit = 1;
         }
 
         public Valve getValve(string name)
         {
-            while (Valves.Next != null)
+            Valve tempValve = Valves;
+            while (tempValve.Next != null)
             {
-                if (Valves.Name == name)
-                    return Valves;
+                if (tempValve.Name == name)
+                    return tempValve;
 
-                Valves = (Valve)Valves.Next;
+                tempValve = (Valve)tempValve.Next;
             }
             return null;
         }
 
+        public void flipValve(Valve valve)
+        {
+            if (valve.getOpenState())
+                valve.close();
+            else valve.open();
+        }
+        
         /// <summary>
         /// Draws the specified canvas.
         /// </summary>
@@ -764,7 +793,48 @@ namespace kylsim
         /// </summary>
         public override void Dynamics(int dt)
         {
-            // Calculate flow difference
+            calculateFlowDifference();
+            nodeFlowAdjust();
+            fouling();
+            fullWarningCheck();
+            clearingCheck();
+            fullCheck();
+
+        }
+        public void openingLimiter()
+        {
+                double openingTemp;
+                openingTemp= Opening - G * Flow;
+                if (openingTemp > OpeningLimit)
+                    Opening = OpeningLimit;
+                else Opening = openingTemp;
+            
+        }
+        public void nodeFlowAdjust()
+        {
+            NodeIn.AddSumFlow(-Flow);
+            NodeOut.AddSumFlow(Flow);
+        }
+        public void fullCheck()
+        {
+            if (Opening >= OpeningLimit && Full)
+            {
+                Full = false;
+                normalizeFlow();
+            }
+        }
+        public void clearingCheck()
+        {
+            if (Opening <= OpeningLimitCleaning)
+                clearFilter();
+        }
+        public void fullWarningCheck()
+        {
+            if (Opening <= OpeningLimitWarning && !Full)
+                Full = true;
+        }
+        public void calculateFlowDifference()
+        {
             double PressureDifference;
             if (NodeIn.Pressure >= NodeOut.Pressure)
             {
@@ -776,18 +846,25 @@ namespace kylsim
                 PressureDifference = (NodeOut.Pressure - NodeIn.Pressure);
                 Flow = (-Admittance) * Opening * (System.Math.Sqrt(PressureDifference));
             }
-            NodeIn.AddSumFlow(-Flow);
-            NodeOut.AddSumFlow(Flow);
-
-            //
-            if (Opening >= 0 && Opening <= 1)
-                Opening = Opening - G * Flow;
-
-            if (Opening < 0.5)
+        }
+        public void fouling()
+        {
+            if (Opening >= 0 && Opening <= OpeningLimit)
             {
-                Full = true;
+                openingLimiter();
             }
-
+        }
+        public void clearFilter()
+        {
+            getValve("V4").open();
+            getValve("V5").open();
+            getValve("V2").close();
+        }
+        public void normalizeFlow()
+        {
+            getValve("V4").close();
+            getValve("V5").close();
+            getValve("V2").open();
         }
 
         /// <summary>
