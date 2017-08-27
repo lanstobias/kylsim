@@ -10,10 +10,12 @@ namespace kylsim
     public class VVS
     {
         public string Name { get; protected set; }
+        public string LogFileName { get; set; }
         public float X { get; protected set; }
         public float Y { get; protected set; }
         public float W { get; protected set; }
         public float H { get; protected set; }
+        public double gt { get; set; }
 
         public VVS Next { get; set; }
 
@@ -44,6 +46,7 @@ namespace kylsim
             Y = y;
             W = w;
             H = h;
+            LogFileName = "kylsim.log";
         }
 
         /// <summary>
@@ -52,7 +55,7 @@ namespace kylsim
         /// <param name="canvas">The canvas.</param>
         public virtual void Draw(Graphics canvas) {}
         public virtual void Display(Graphics canvas) { }
-        public virtual void Dynamics() { }
+        public virtual void Dynamics(int dt) { }
         public virtual void DisplayMenu(int clickX, int clickY, Control ctrl) { }
         public virtual bool clickInsideComponent(int clickX, int clickY) { return false; }
     }
@@ -66,6 +69,9 @@ namespace kylsim
         public double Pressure { get; private set; }
         private bool Adjustable { get; set; }
         public double SumFlow { get; private set; }
+        public double SumFlow_old { get; private set; }
+        public double PropConst { get; private set; }
+        public double InError { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Node"/> class.
@@ -94,13 +100,15 @@ namespace kylsim
             Adjustable = adjustable;
             SumFlow    = sumFlow;
             Next = next;
+            PropConst = 0.05;
+            InError = 0.001;
         }
 
         /// <summary>
         /// Draws the specified canvas.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        public override void Draw(Graphics canvas) 
+        public override void Draw(Graphics canvas)
         {
             // Draw ellipse
             canvas.DrawEllipse(ComponentPen, X, Y-((W+H)/4), W, H);
@@ -124,16 +132,28 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public override void Dynamics()
+        public override void Dynamics(int dt)
         {
             if (Adjustable)
             {
-                if (SumFlow > 0)
-                    Pressure += 0.1;
-                else if (SumFlow < 0)
-                    Pressure -= 0.1;
-                SumFlow = 0;
+                if (Math.Abs(SumFlow) > 0.1)
+                {
+                    if (SumFlow * SumFlow_old < 0 && Math.Abs(SumFlow) > Math.Abs(SumFlow_old))
+                        PropConst *= 0.8;
+                    else
+                        PropConst *= 1.05;
+                    if (PropConst * Math.Abs(SumFlow) > 0.8 * Pressure)
+                        PropConst = 0.8 * Pressure / Math.Abs(SumFlow);
+                    if (PropConst < 0.0001)
+                        PropConst = 0.0001;
+                }
+                InError += PropConst * SumFlow;
+                Pressure = SumFlow * PropConst * 0.25 + InError;
+                if (Pressure < 0.001)
+                    Pressure = 0.001;
             }
+            SumFlow_old = SumFlow;
+            SumFlow = 0;
         }
 
         /// <summary>
@@ -174,7 +194,7 @@ namespace kylsim
         /// <param name="position">The position.</param>
         /// <param name="admittance">The admittance.</param>
         public Valve(string name = "", float x = 0, float y = 0, float w = 15, float h = 10,
-                     double position = 0, double admittance = 10, Node nodeIn = null, Node nodeOut = null, VVS next = null)
+                     double position = 0, double admittance = 10, bool open = true, Node nodeIn = null, Node nodeOut = null, VVS next = null)
         {
             Name = name;
             X = x;
@@ -186,7 +206,8 @@ namespace kylsim
             Position   = position;
             Admittance = admittance;
             Next = next;
-            Open = true;
+            Open = open;
+            gt = 0.5;
         }
 
         /// <summary>
@@ -226,21 +247,28 @@ namespace kylsim
             canvas.DrawString(Name, Font, Brush, (float)X + 10, (float)Y + -25);
             canvas.DrawString("vpos : ", Font, Brush, (float)X + 10, (float)Y + 15);
             canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 30);
+            canvas.DrawString("gt : ", Font, Brush, (float)X + 10, (float)Y + 45);
         }
 
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public override void Dynamics()
+        public override void Dynamics(int dt)
         {
             //Check if valve is closed
-            if (!Open && Math.Round(Position, 1) > 0)
-                Position -= 0.1;
+            if (!Open && Math.Round(Position, 5) > 0)
+            {
+                Position -= (gt * dt) / 2000;
+                if (Position < 0) Position = 0;
+            }
 
             //Check if valve is open
-            if (Open && Math.Round(Position, 1) < 1)
-                Position += 0.1;
-
+            if (Open && Math.Round(Position, 5) < 1)
+            { 
+                Position += (gt * dt) / 2000;
+                if (Position > 1) Position = 1;
+            }
+          
             // Calculate flow difference
             double PressureDifference;
             if (NodeIn.Pressure >= NodeOut.Pressure)
@@ -268,6 +296,7 @@ namespace kylsim
             const string twoDecimals = "F1";
             canvas.DrawString(Position.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 15);
             canvas.DrawString(Flow.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 30);
+            canvas.DrawString(gt.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 45);
         }
 
         /// <summary>
@@ -282,6 +311,7 @@ namespace kylsim
                 ContextMenu menu = new ContextMenu();
                 menu.MenuItems.Add("Öppna", new EventHandler(menu_select_open));
                 menu.MenuItems.Add("Stäng", new EventHandler(menu_select_close));
+                menu.MenuItems.Add("Ändra gtidskonstant", new EventHandler(menu_select_gtid));
                 menu.Show(ctrl, new Point(clickX, clickY));
             }
         }
@@ -293,7 +323,7 @@ namespace kylsim
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_open(object sender, EventArgs e)
         {
-            Open = true;
+            open();
         }
 
         /// <summary>
@@ -303,7 +333,18 @@ namespace kylsim
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_close(object sender, EventArgs e)
         {
-            Open = false;
+            close();
+        }
+
+        /// <summary>
+        /// Handles the select gt
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menu_select_gtid(object sender, EventArgs e)
+        {
+            FormSetGt formSetGt = new FormSetGt(this);
+            formSetGt.Show();
         }
 
         /// <summary>
@@ -316,6 +357,29 @@ namespace kylsim
         {
             return ((clickX >= X - W && clickX <= X + W) && (clickY >= Y - H && clickY <= Y + H));
         }
+
+        public void open()
+        {
+            if (!Open)
+            {
+                Open = true;
+                Log.Write(LogFileName, "Open valve: " + Name);
+            }
+        }
+        public void close()
+        {
+            if (Open)
+            {
+                Open = false;
+                Log.Write(LogFileName, "Close valve: " + Name);
+            }
+        }
+
+        public bool getOpenState()
+        {
+            return Open;
+        }
+
     }
 
     /// <summary>
@@ -359,7 +423,8 @@ namespace kylsim
             Speed = speed;
             K = k;
             Next = next;
-            Open = true;
+            Open = false;
+            gt = 0.5;
         }
 
         /// <summary>
@@ -388,22 +453,29 @@ namespace kylsim
             canvas.DrawString(Name, Font, Brush, (float)X + 20, (float)Y + - 35);
             canvas.DrawString("Speed : ", Font, Brush, (float)X + 10, (float)Y + 20);
             canvas.DrawString("Flow : ", Font, Brush, (float)X + 10, (float)Y + 35);
+            canvas.DrawString("gt : ", Font, Brush, (float)X + 10, (float)Y + 50);
         }
 
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public override void Dynamics()
+        public override void Dynamics(int dt)
         {
             const double a = 5, b = 10;
 
             // Check if Pump is closed
-            if (!Open && Math.Round(Speed, 1) > 0)
-                Speed -= 0.1;
+            if (!Open && Math.Round(Speed, 5) > 0)
+            {
+                Speed -= (gt * dt) / 2000;
+                if (Speed < 0) Speed = 0;
+            }
 
             // Check if Pump is open
-            if (Open && Math.Round(Speed, 1) < 1)
-                Speed += 0.1;
+            if (Open && Math.Round(Speed, 5) < 1)
+            {
+                Speed += (gt * dt) / 2000;
+                if (Speed > 1) Speed = 1;
+            }
 
             // Calculate flow difference
             double PressureDifference;
@@ -445,6 +517,7 @@ namespace kylsim
             const string twoDecimals = "F1";
             canvas.DrawString(Speed.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 20);
             canvas.DrawString(Flow.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 35);
+            canvas.DrawString(gt.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 50);
         }
 
         /// <summary>
@@ -459,6 +532,7 @@ namespace kylsim
                 ContextMenu menu = new ContextMenu();
                 menu.MenuItems.Add("Starta", new EventHandler(menu_select_open));
                 menu.MenuItems.Add("Stoppa", new EventHandler(menu_select_close));
+                menu.MenuItems.Add("Ändra gtidskonstant", new EventHandler(menu_select_gtid));
                 menu.Show(ctrl, new Point(clickX, clickY));
             }
         }
@@ -470,7 +544,11 @@ namespace kylsim
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_open(object sender, EventArgs e)
         {
-            Open = true;
+            if (!Open)
+            {
+                Open = true;
+                Log.Write(LogFileName, "Open pump: " + Name);
+            }
         }
 
         /// <summary>
@@ -480,7 +558,22 @@ namespace kylsim
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_select_close(object sender, EventArgs e)
         {
-            Open = false;
+            if (Open)
+            {
+                Open = false;
+                Log.Write(LogFileName, "Close pump: " + Name);
+            }
+        }
+
+        /// <summary>
+        /// Handles the select gt
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menu_select_gtid(object sender, EventArgs e)
+        {
+            FormSetGt formSetGt = new FormSetGt(this);
+            formSetGt.Show();
         }
 
         /// <summary>
@@ -539,7 +632,7 @@ namespace kylsim
         /// <param name="canvas">The canvas.</param>
         public override void Draw(Graphics canvas)
         {
-            
+
             // Draw HeatExchanger graphics
             canvas.DrawLine(ComponentPen, X - W, Y - H, X - W, Y + H); //vänsterlinje
             canvas.DrawLine(ComponentPen, X - W, Y - H, X + W, Y - H); //övrelinje
@@ -550,7 +643,7 @@ namespace kylsim
 
             canvas.DrawLine(ComponentPen, X + W, Y + H, X + W, Y - H); //högerlinje
             canvas.DrawLine(ComponentPen, X + W, Y + H, X - W, Y + H); //nedrelinje
-            
+
             // Draw lines
             canvas.DrawLine(LinePen, X, Y, NodeIn.X + (NodeIn.W + NodeIn.H) / 4, NodeIn.Y);
             canvas.DrawLine(LinePen, X, Y, NodeOut.X + (NodeOut.W + NodeOut.H) / 4, NodeOut.Y);
@@ -563,7 +656,7 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public override void Dynamics()
+        public override void Dynamics(int dt)
         {
             // Calculate flow difference
             double PressureDifference;
@@ -602,9 +695,13 @@ namespace kylsim
         private double Admittance { get; set; }
         private double G { get; set; }
         private bool Full = false;
+        private double OpeningLimitWarning { get; set; }
+        private double OpeningLimitCleaning { get; set; }
+        private double OpeningLimit { get; set; }
         public Node NodeIn { get; set; }
         public Node NodeOut { get; set; }
         private bool RensaRed = false;
+        private Valve Valves { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Filter"/> class.
@@ -621,7 +718,7 @@ namespace kylsim
         /// <param name="next">The next.</param>
         public Filter(string name = "", float x = 0, float y = 0, float w = 30, float h = 20,
                       double opening = 0, double g = 0, double admittance = 10,
-                      Node nodeIn = null, Node nodeOut = null, VVS next = null)
+                      Node nodeIn = null, Node nodeOut = null, VVS next = null,  Valve valves = null)
         {
             Name = name;
             X = x;
@@ -630,10 +727,34 @@ namespace kylsim
             H = h;
             Opening = opening;
             G = g;
-            NodeIn  = nodeIn;
+            NodeIn = nodeIn;
             NodeOut = nodeOut;
-            Next    = next;
+            Next = next;
             Admittance = admittance;
+            Valves = valves;
+            OpeningLimitWarning = 0.5;
+            OpeningLimitCleaning = 0.2;
+            OpeningLimit = 1;
+        }
+
+        public Valve getValve(string name)
+        {
+            Valve tempValve = Valves;
+            while (tempValve.Next != null)
+            {
+                if (tempValve.Name == name)
+                    return tempValve;
+
+                tempValve = (Valve)tempValve.Next;
+            }
+            return null;
+        }
+
+        public void flipValve(Valve valve)
+        {
+            if (valve.getOpenState())
+                valve.close();
+            else valve.open();
         }
 
         /// <summary>
@@ -670,9 +791,55 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public override void Dynamics()
+        public override void Dynamics(int dt)
         {
-            // Calculate flow difference
+            calculateFlowDifference();
+            nodeFlowAdjust();
+            fouling();
+            fullWarningCheck();
+            clearingCheck();
+            fullCheck();
+
+        }
+
+        public void openingLimiter()
+        {
+            double openingTemp = Opening - G * Flow;
+            if (openingTemp > OpeningLimit)
+                Opening = OpeningLimit;
+            else
+                Opening = openingTemp;
+        }
+
+        public void nodeFlowAdjust()
+        {
+            NodeIn.AddSumFlow(-Flow);
+            NodeOut.AddSumFlow(Flow);
+        }
+
+        public void fullCheck()
+        {
+            if (Opening >= OpeningLimit && Full)
+            {
+                Full = false;
+                normalizeFlow();
+            }
+        }
+
+        public void clearingCheck()
+        {
+            if (Opening <= OpeningLimitCleaning)
+                clearFilter();
+        }
+
+        public void fullWarningCheck()
+        {
+            if (Opening <= OpeningLimitWarning && !Full)
+                Full = true;
+        }
+
+        public void calculateFlowDifference()
+        {
             double PressureDifference;
             if (NodeIn.Pressure >= NodeOut.Pressure)
             {
@@ -684,16 +851,28 @@ namespace kylsim
                 PressureDifference = (NodeOut.Pressure - NodeIn.Pressure);
                 Flow = (-Admittance) * Opening * (System.Math.Sqrt(PressureDifference));
             }
-            NodeIn.AddSumFlow(-Flow);
-            NodeOut.AddSumFlow(Flow);
+        }
 
-            // 
-            Opening = Opening - G * Flow;
-            if (Opening < 0.5)
+        public void fouling()
+        {
+            if (Opening >= 0 && Opening <= OpeningLimit)
             {
-                Full = true;
+                openingLimiter();
             }
+        }
 
+        public void clearFilter()
+        {
+            getValve("V4").open();
+            getValve("V5").open();
+            getValve("V2").close();
+        }
+
+        public void normalizeFlow()
+        {
+            getValve("V4").close();
+            getValve("V5").close();
+            getValve("V2").open();
         }
 
         /// <summary>
@@ -702,9 +881,10 @@ namespace kylsim
         /// <param name="canvas">The canvas.</param>
         public override void Display(Graphics canvas)
         {
-            const string twoDecimals = "F1";
+            const string oneDecimal = "F1";
+            const string twoDecimals = "F2";
             canvas.DrawString(Opening.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 25);
-            canvas.DrawString(Flow.ToString(twoDecimals), FontBold, Brush, (float)X + 45, (float)Y + 40);
+            canvas.DrawString(Flow.ToString(oneDecimal), FontBold, Brush, (float)X + 45, (float)Y + 40);
         }
 
         public void DrawRensa(Graphics canvas)
@@ -717,7 +897,7 @@ namespace kylsim
             else if (Full)
             {
                 if (RensaRed)
-                { 
+                {
                     canvas.DrawString(str, Font, RedBrush, (float)X + 10, (float)Y - 35);
                     RensaRed = false;
                 }

@@ -8,6 +8,7 @@ namespace kylsim
     {
         private VVS RootComponents = null;
         private VVS RootNodes = null;
+        public Log LogFile = new Log();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Kylsim"/> class.
@@ -40,22 +41,22 @@ namespace kylsim
             RootNodes = node8;
 
             // Create valves
-            Valve valve1 = new Valve("V1", COL2, ROW5, 15, 10, 1, 10, node1, node2, null);
-            Valve valve2 = new Valve("V2", COL6, ROW2, 15, 10, 1, 10, node5, node4, valve1);
-            Valve valve3 = new Valve("V3", COL2, ROW2, 15, 10, 1, 10, node7, node6, valve2);
-            Valve valve4 = new Valve("V4", COL5, ROW3, 15, 10, 1, 10, node6, node4, valve3);
-            Valve valve5 = new Valve("V5", COL6, ROW1, 15, 10, 1, 10, node5, node8, valve4);
+            Valve valve1 = new Valve("V1", COL2, ROW5, 15, 10, 1, 10, true, node1, node2, null);
+            Valve valve2 = new Valve("V2", COL6, ROW2, 15, 10, 1, 10, true, node4, node5, valve1);
+            Valve valve3 = new Valve("V3", COL2, ROW2, 15, 10, 1, 10, true, node6, node7, valve2);
+            Valve valve4 = new Valve("V4", COL5, ROW3, 15, 10, 0, 10, false, node4, node6, valve3);
+            Valve valve5 = new Valve("V5", COL6, ROW1, 15, 10, 0, 10, false, node5, node8, valve4);
 
             // Create filters
             const int PUSH_UP = 10;
-            Filter filter1 = new Filter("F1", COL4, ROW2 - PUSH_UP, 30, 20, 1, 0.0001, 10, node6, node5, valve5);
+            Filter filter1 = new Filter("F1", COL4, ROW2 - PUSH_UP, 30, 20, 1, 0.0001, 10, node5, node6, valve5, valve5);
 
             // Create HeatExchangers
             const int PUSH_SIDE = 5;
-            HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL7 + PUSH_SIDE, ROW4, 10, 20, 10, node4, node3, filter1);
+            HeatExchanger heatExchanger1 = new HeatExchanger("HX1", COL7 + PUSH_SIDE, ROW4, 10, 20, 10, node3, node4, filter1);
 
             // Create Pump
-            Pump pump1 = new Pump("P1", COL5+40, ROW5, 20, 1, 1, node2, node3, heatExchanger1);
+            Pump pump1 = new Pump("P1", COL5+40, ROW5, 20, 0, 1, node2, node3, heatExchanger1);
 
             // Change to last component in the chain
             RootComponents = pump1;
@@ -104,18 +105,18 @@ namespace kylsim
         /// <summary>
         /// Dynamicses this instance.
         /// </summary>
-        public void Dynamics()
+        public void Dynamics(int dt)
         {
             var next = RootNodes;
             while (next != null)
             {
-                next.Dynamics();
+                next.Dynamics(dt);
                 next = next.Next;
             }
             next = RootComponents;
             while (next != null)
             {
-                next.Dynamics();
+                next.Dynamics(dt);
                 next = next.Next;
             }
         }
