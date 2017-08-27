@@ -756,7 +756,7 @@ namespace kylsim
                 valve.close();
             else valve.open();
         }
-        
+
         /// <summary>
         /// Draws the specified canvas.
         /// </summary>
@@ -803,12 +803,11 @@ namespace kylsim
         }
         public void openingLimiter()
         {
-                double openingTemp;
-                openingTemp= Opening - G * Flow;
-                if (openingTemp > OpeningLimit)
-                    Opening = OpeningLimit;
-                else Opening = openingTemp;
-            
+            double openingTemp = Opening - G * Flow;
+            if (openingTemp > OpeningLimit)
+                Opening = OpeningLimit;
+            else
+                Opening = openingTemp;
         }
         public void nodeFlowAdjust()
         {
