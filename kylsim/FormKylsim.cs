@@ -47,7 +47,6 @@ namespace kylsim
         {
             this.Refresh();
             int dt = Int32.Parse(timer.Interval.ToString());
-            //MessageBox.Show(dt.ToString());
             kylsim.Dynamics(dt);
             kylsim.Display(canvas);
         }

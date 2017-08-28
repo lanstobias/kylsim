@@ -26,6 +26,7 @@ namespace kylsim
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
+            Log.Write(vvsComp.LogFileName, vvsComp.Name + " ändrar gångtiden från " + vvsComp.gt + " till " + (numericUpDown1.Value).ToString());
             vvsComp.gt = (double)numericUpDown1.Value;
             Close();
         }

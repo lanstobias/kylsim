@@ -264,11 +264,11 @@ namespace kylsim
 
             //Check if valve is open
             if (Open && Math.Round(Position, 5) < 1)
-            { 
+            {
                 Position += (gt * dt) / 2000;
                 if (Position > 1) Position = 1;
             }
-          
+
             // Calculate flow difference
             double PressureDifference;
             if (NodeIn.Pressure >= NodeOut.Pressure)
@@ -366,6 +366,7 @@ namespace kylsim
                 Log.Write(LogFileName, "Open valve: " + Name);
             }
         }
+
         public void close()
         {
             if (Open)
@@ -379,7 +380,6 @@ namespace kylsim
         {
             return Open;
         }
-
     }
 
     /// <summary>
@@ -698,6 +698,7 @@ namespace kylsim
         private double OpeningLimitWarning { get; set; }
         private double OpeningLimitCleaning { get; set; }
         private double OpeningLimit { get; set; }
+        private bool SelfCleaningActive { get; set; }
         public Node NodeIn { get; set; }
         public Node NodeOut { get; set; }
         private bool RensaRed = false;
@@ -735,6 +736,7 @@ namespace kylsim
             OpeningLimitWarning = 0.5;
             OpeningLimitCleaning = 0.2;
             OpeningLimit = 1;
+            SelfCleaningActive = false;
         }
 
         public Valve getValve(string name)
@@ -799,7 +801,6 @@ namespace kylsim
             fullWarningCheck();
             clearingCheck();
             fullCheck();
-
         }
 
         public void openingLimiter()
@@ -822,20 +823,32 @@ namespace kylsim
             if (Opening >= OpeningLimit && Full)
             {
                 Full = false;
+                Log.Write(LogFileName, Name + " fully cleaned.");
                 normalizeFlow();
             }
         }
 
         public void clearingCheck()
         {
-            if (Opening <= OpeningLimitCleaning)
+            if (Opening <= OpeningLimitCleaning && !SelfCleaningActive)
+            {
+                SelfCleaningActive = true;
+                Log.Write(LogFileName, Name + " start self cleaning.");
                 clearFilter();
+            }
+            if (Opening > OpeningLimitCleaning && SelfCleaningActive)
+            {
+                SelfCleaningActive = false;
+            }
         }
 
         public void fullWarningCheck()
         {
             if (Opening <= OpeningLimitWarning && !Full)
+            {
                 Full = true;
+                Log.Write(LogFileName, Name + " is full.");
+            }
         }
 
         public void calculateFlowDifference()
